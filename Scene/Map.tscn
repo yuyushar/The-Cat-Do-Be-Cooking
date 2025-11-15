@@ -1,0 +1,176 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://asset/map/map.png" type="Texture" id=1]
+[ext_resource path="res://Scene/Map.gd" type="Script" id=2]
+[ext_resource path="res://tema.tres" type="Theme" id=3]
+[ext_resource path="res://asset/map/help.png" type="Texture" id=4]
+[ext_resource path="res://asset/map/help_hover.png" type="Texture" id=5]
+[ext_resource path="res://asset/map/help_click.png" type="Texture" id=6]
+[ext_resource path="res://Scene/HintPopup.gd" type="Script" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[node name="Map" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+script = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="MenuButton" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 198.0
+margin_top = 65.0
+margin_right = 408.0
+margin_bottom = 429.0
+focus_mode = 0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+
+[node name="LibraryButton" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 1003.0
+margin_top = 258.0
+margin_right = 1229.0
+margin_bottom = 527.0
+focus_mode = 0
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 5 )
+
+[node name="KitchenButton" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 524.0
+margin_top = 261.0
+margin_right = 798.0
+margin_bottom = 606.0
+focus_mode = 0
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 5 )
+
+[node name="HoverLabel" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="HintButton" type="TextureButton" parent="."]
+margin_left = 27.0
+margin_top = 26.0
+margin_right = 177.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 6 )
+texture_hover = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+
+[node name="TutorialPopup" type="PopupPanel" parent="."]
+anchor_top = 0.003
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -8.0
+margin_top = -0.304
+margin_right = -1344.0
+margin_bottom = -724.0
+popup_exclusive = true
+script = ExtResource( 7 )
+
+[node name="PanelContainer" type="PanelContainer" parent="TutorialPopup"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 26.0
+margin_bottom = 38.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialPopup/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1087.0
+margin_bottom = 616.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="PageTexture" type="TextureRect" parent="TutorialPopup/PanelContainer/VBoxContainer"]
+margin_right = 1080.0
+margin_bottom = 560.0
+rect_min_size = Vector2( 1080, 560 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand = true
+stretch_mode = 6
+
+[node name="ButtonBar" type="HBoxContainer" parent="TutorialPopup/PanelContainer/VBoxContainer"]
+margin_top = 564.0
+margin_right = 1080.0
+margin_bottom = 609.0
+alignment = 1
+
+[node name="PrevButton" type="Button" parent="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar"]
+margin_left = 356.0
+margin_right = 476.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Previous"
+
+[node name="NextButton" type="Button" parent="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar"]
+margin_left = 480.0
+margin_right = 600.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Next"
+
+[node name="ExitButton" type="Button" parent="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar"]
+margin_left = 604.0
+margin_right = 724.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Exit"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="pressed" from="HintButton" to="TutorialPopup" method="_on_HintButton_pressed"]
+[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/PrevButton" to="TutorialPopup" method="_on_PrevButton_pressed"]
+[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/NextButton" to="TutorialPopup" method="_on_NextButton_pressed"]
+[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/ExitButton" to="TutorialPopup" method="_on_ExitButton_pressed"]
