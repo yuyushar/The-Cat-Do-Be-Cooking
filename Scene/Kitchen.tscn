@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://asset/kitchen/bg_kitchen.png" type="Texture" id=1]
 [ext_resource path="res://asset/kitchen/string.png" type="Texture" id=2]
@@ -15,6 +15,11 @@
 [ext_resource path="res://asset/kitchen/npc_5.png" type="Texture" id=13]
 [ext_resource path="res://asset/kitchen/npc_1.png" type="Texture" id=14]
 [ext_resource path="res://Scene/Kitchen.gd" type="Script" id=15]
+[ext_resource path="res://Scene/PotArea.gd" type="Script" id=16]
+[ext_resource path="res://Scene/IngredientObject.tscn" type="PackedScene" id=17]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 47.8339
 
 [node name="Kitchen" type="Control"]
 anchor_right = 1.0
@@ -77,9 +82,10 @@ scale = Vector2( 0.607629, 0.607629 )
 texture = ExtResource( 4 )
 
 [node name="SelfIngredient" type="Sprite" parent="."]
-position = Vector2( 1064, 384 )
+position = Vector2( 1101, 421 )
 scale = Vector2( 0.708333, 0.708333 )
 texture = ExtResource( 11 )
+offset = Vector2( -52.2354, -52.2353 )
 
 [node name="Spoon" type="Sprite" parent="."]
 position = Vector2( 106, 480 )
@@ -95,3 +101,14 @@ texture = ExtResource( 7 )
 position = Vector2( 492, 524 )
 scale = Vector2( 0.710109, 0.710109 )
 texture = ExtResource( 12 )
+
+[node name="PotArea" type="Area2D" parent="."]
+position = Vector2( 495, 600 )
+scale = Vector2( 5, 5 )
+script = ExtResource( 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PotArea"]
+position = Vector2( -1.90735e-06, 3.4 )
+shape = SubResource( 1 )
+
+[node name="IngredientObject" parent="." instance=ExtResource( 17 )]

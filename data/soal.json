@@ -1,0 +1,670 @@
+{
+    "Fisika": {
+        "1": {
+            "question": "Gaya yang menyebabkan benda jatuh ke bawah adalah",
+            "options": [
+                "A. Gaya otot",
+                "B. Gaya gesek",
+                "C. Gaya gravitasi",
+                "D. Gaya liatrik"
+            ],
+            "answer": "C",
+            "Explanation": "Gaya gravitasi adalah gaya tarik-menarik yang bekerja antara dua benda yang memiliki massa, seperti bumi dan benda di atasnya."
+        },
+        "2": {
+            "question": "Energi yang dimiliki benda karena bergerak disebut …",
+            "options": [
+                "A. Energi potensial",
+                "B. Energi kinetik",
+                "C. Energi panas",
+                "D. Energi bunyi"
+            ],
+            "answer": "B",
+            "Explanation": "Energi kinetik adalah energi yang dimiliki oleh benda karena gerakannya. Semakin cepat benda bergerak, semakin besar energi kinetiknya."
+        },
+        "3": {
+            "question": "Sumber energi utama di bumi adalah …",
+            "options": [
+                "A. Bulan",
+                "B. Matahari",
+                "C. Bintang",
+                "D. Api"
+            ],
+            "answer": "B",
+            "Explanation": "Matahari adalah sumber energi utama bagi bumi, menyediakan cahaya dan panas yang diperlukan untuk kehidupan."
+        },
+        "4": {
+            "question": "Ketika menggosok dua batang plastik, keduanya bisa saling tarik menarik. Hal ini disebabkan oleh …",
+            "options": [
+                "A. Gaya gravitasi",
+                "B. Listrik statis",
+                "C. Gaya gesek",
+                "D. Gaya magnet"
+            ],
+            "answer": "B",
+            "Explanation": "Listrik statis terjadi ketika muatan listrik menumpuk pada permukaan benda, sehingga menyebabkan gaya tarik-menarik atau tolak-menolak antara benda tersebut."
+        },
+        "5": {
+            "question": "Alat untuk mengukur suhu adalah …",
+            "options": [
+                "A. Barometer",
+                "B. Termometer",
+                "C. Hygrometer",
+                "D. Voltmeter"
+            ],
+            "answer": "B",
+            "Explanation": "Termometer adalah alat yang digunakan untuk mengukur suhu suatu benda atau lingkungan."
+        },
+        "6": {
+            "question": "Satuan gaya dalam SI adalah …",
+            "options": [
+                "A. Joule",
+                "B. Watt",
+                "C. Newton",
+                "D. Meter"
+            ],
+            "answer": "C",
+            "Explanation": "Newton (N) adalah satuan untuk gaya dalam Sistem Internasional (SI)."
+        },
+        "7": {
+            "question": "Benda dikatakan mengapung di air jika …",
+            "options": [
+                "A. Berat jenis benda lebih besar dari air",
+                "B. Berat jenis benda lebih kecil dari air",
+                "C. Gaya apung lebih kecil dari berat benda",
+                "D. Benda bermuatan listrik"
+            ],
+            "answer": "B",
+            "Explanation": "Benda akan mengapung jika berat jenisnya lebih kecil daripada berat jenis air, sehingga gaya apung yang diterima benda lebih besar daripada beratnya."
+        },
+        "8": {
+            "question": "Suara dapat merambat melalui …",
+            "options": [
+                "A. Ruang hampa",
+                "B. Udara, air, dan padat",
+                "C. Hanya udara",
+                "D. Cahaya"
+            ],
+            "answer": "B",
+            "Explanation": "Suara merambat melalui medium seperti udara, air, dan benda padat, tetapi tidak dapat merambat melalui ruang hampa karena tidak ada partikel untuk menghantarkan gelombang suara."
+        },
+        "9": {
+            "question": "Ketika kamu memegang sendok logam yang ujungnya diletakkan di air panas, ujung lainnya terasa panas. Ini karena …",
+            "options": [
+                "A. Radiasi panas",
+                "B. Konduksi panas",
+                "C. Konveksi panas",
+                "D. Pemuaian"
+            ],
+            "answer": "B",
+            "Explanation": "Konduksi panas adalah proses perpindahan panas melalui zat padat, di mana energi panas ditransfer dari molekul yang lebih panas ke molekul yang lebih dingin."
+        },
+        "10": {
+            "question": "Alat yang mengubah energi listrik menjadi cahaya adalah …",
+            "options": [
+                "A. Setrika",
+                "B. Lampu",
+                "C. Radio",
+                "D. Kipas angin"
+            ],
+            "answer": "B",
+            "Explanation": "Lampu adalah alat yang mengubah energi listrik menjadi cahaya melalui proses pemanasan filamen atau penggunaan LED."
+        },
+        "11": {
+            "question": "Sumber energi alternatif yang ramah lingkungan adalah …",
+            "options": [
+                "A. Batu bara",
+                "B. Minyak bumi",
+                "C. Tenaga surya",
+                "D. Gas alam"
+            ],
+            "answer": "C",
+            "Explanation": "Tenaga surya adalah sumber energi alternatif yang ramah lingkungan karena menggunakan energi matahari yang tidak menghasilkan polusi."
+        },
+        "12": {
+            "question": "Bayangan yang terbentuk pada cermin datar adalah …",
+            "options": [
+                "A. Terbalik dan nyata",
+                "B. Tegak dan semu",
+                "C. Diperbesar dan nyata",
+                "D. Tegak dan nyata"
+            ],
+            "answer": "B",
+            "Explanation": "Bayangan pada cermin datar bersifat tegak (upright) dan semu (virtual), karena bayangan tersebut tidak dapat ditangkap pada layar."
+        },
+        "13": {
+            "question": "Alat yang digunakan untuk mengukur kuat arus listrik adalah …",
+            "options": [
+                "A. Voltmeter",
+                "B. Ohmmeter",
+                "C. Amperemeter",
+                "D. Barometer"
+            ],
+            "answer": "C",
+            "Explanation": "Amperemeter adalah alat yang digunakan untuk mengukur kuat arus listrik dalam rangkaian."
+        },
+        "14": {
+            "question": "Gaya yang bekerja saat kita mengayuh sepeda adalah …",
+            "options": [
+                "A. Gaya gravitasi",
+                "B. Gaya otot",
+                "C. Gaya listrik",
+                "D. Gaya magnet"
+            ],
+            "answer": "B",
+            "Explanation": "Gaya otot adalah gaya yang dihasilkan oleh kontraksi otot tubuh kita saat melakukan aktivitas fisik, seperti mengayuh sepeda."
+        },
+        "15": {
+            "question": "Ketika air dipanaskan, wujudnya berubah menjadi uap air. Proses ini disebut …",
+            "options": [
+                "A. Pembekuan",
+                "B. Penguapan",
+                "C. Pengembunan",
+                "D. Penyubliman"
+            ],
+            "answer": "B",
+            "Explanation": "Penguapan adalah proses perubahan wujud zat dari cair menjadi gas (uap) akibat pemanasan."
+        }
+    },
+    "Biologi": {
+        "1": {
+            "question": "Proses pertukaran oksigen dan karbon dioksida di paru-paru terjadi di bagian …",
+            "options": [
+                "A. Bronkus",
+                "B. Trakea",
+                "C. Alveolus",
+                "D. Bronkiolus"
+            ],
+            "answer": "C",
+            "Explanation": "Alveolus adalah kantung udara kecil di paru-paru tempat terjadinya pertukaran gas antara oksigen dan karbon dioksida."
+        },
+        "2": {
+            "question": "Sel darah merah berfungsi untuk …",
+            "options": [
+                "A. Membunuh kuman penyakit",
+                "B. Mengatur suhu tubuh",
+                "C. Mengangkut oksigen",
+                "D. Membentuk antibodi"
+            ],
+            "answer": "C",
+            "Explanation": "Sel darah merah mengandung hemoglobin yang berfungsi mengikat dan mengangkut oksigen dari paru-paru ke seluruh tubuh."
+        },
+        "3": {
+            "question": "Zat yang dibutuhkan tumbuhan untuk melakukan fotosintesis adalah …",
+            "options": [
+                "A. Oksigen dan air",
+                "B. Karbon dioksida, air, dan cahaya matahari",
+                "C. Nitrogen dan air",
+                "D. Glukosa dan oksigen"
+            ],
+            "answer": "B",
+            "Explanation": "Fotosintesis adalah proses di mana tumbuhan menggunakan karbon dioksida, air, dan cahaya matahari untuk menghasilkan glukosa dan oksigen."
+        },
+        "4": {
+            "question": "Bagian otak yang mengatur keseimbangan tubuh adalah …",
+            "options": [
+                "A. Otak besar",
+                "B. Otak tengah",
+                "C. Otak kecil (cerebellum)",
+                "D. Sumsum tulang belakang"
+            ],
+            "answer": "C",
+            "Explanation": "Otak kecil (cerebellum) berperan penting dalam mengatur keseimbangan dan koordinasi gerakan tubuh."
+        },
+        "5": {
+            "question": "Proses penyesuaian diri makhluk hidup terhadap lingkungannya disebut …",
+            "options": [
+                "A. Evolusi",
+                "B. Adaptasi",
+                "C. Mutasi",
+                "D. Reproduksi"
+            ],
+            "answer": "B",
+            "Explanation": "Adaptasi adalah proses di mana makhluk hidup menyesuaikan diri dengan lingkungan sekitarnya untuk bertahan hidup."
+        },
+        "6": {
+            "question": "Organisme yang hanya memakan tumbuhan disebut …",
+            "options": [
+                "A. Karnivora",
+                "B. Omnivora",
+                "C. Herbivora",
+                "D. Insektivora"
+            ],
+            "answer": "C",
+            "Explanation": "Herbivora adalah hewan yang hanya memakan tumbuhan sebagai sumber makanannya."
+        },
+        "7": {
+            "question": "Hubungan antara kupu-kupu dan bunga dalam proses penyerbukan disebut …",
+            "options": [
+                "A. Kompetisi",
+                "B. Mutualisme",
+                "C. Parasitisme",
+                "D. Komensalisme"
+            ],
+            "answer": "B",
+            "Explanation": "Mutualisme adalah hubungan saling menguntungkan antara dua organisme, seperti kupu-kupu yang mendapatkan nektar dari bunga, sementara bunga mendapatkan bantuan dalam penyerbukan."
+        },
+        "8": {
+            "question": "Bagian tumbuhan yang berfungsi mengangkut hasil fotosintesis adalah …",
+            "options": [
+                "A. Xilem",
+                "B. Floem",
+                "C. Klorofil",
+                "D. Stomata"
+            ],
+            "answer": "B",
+            "Explanation": "Floem adalah jaringan pada tumbuhan yang berfungsi mengangkut hasil fotosintesis (glukosa) dari daun ke seluruh bagian tumbuhan."
+        },
+        "9": {
+            "question": "Hewan seperti ikan dan katak bernapas menggunakan insang pada fase …",
+            "options": [
+                "A. Dewasa",
+                "B. Larva",
+                "C. Telur",
+                "D. Pupa"
+            ],
+            "answer": "B",
+            "Explanation": "Pada fase larva, hewan seperti ikan dan katak menggunakan insang untuk bernapas di dalam air sebelum berkembang menjadi dewasa."
+        },
+        "10": {
+            "question": "Fungsi utama kloroplas pada sel tumbuhan adalah …",
+            "options": [
+                "A. Menyimpan air",
+                "B. Tempat berlangsungnya fotosintesis",
+                "C. Mengatur keluar masuk",
+                "D. Menyerap mineral tanah"
+            ],
+            "answer": "B",
+            "Explanation": "Kloroplas adalah organel dalam sel tumbuhan yang mengandung klorofil dan berfungsi sebagai tempat berlangsungnya proses fotosintesis."
+        },
+        "11": {
+            "question": "Proses penguraian sisa-sisa organisme mati oleh mikroorganisme disebut …",
+            "options": [
+                "A. Dekomposisi",
+                "B. Fermentasi",
+                "C. Respirasi",
+                "D. Ekskresi"
+            ],
+            "answer": "A",
+            "Explanation": "Dekomposisi adalah proses di mana mikroorganisme seperti bakteri dan jamur menguraikan bahan organik dari organisme mati menjadi zat-zat yang lebih sederhana."
+        },
+        "12": {
+            "question": "Urutan tingkatan organisasi kehidupan dari yang paling sederhana ke kompleks adalah …",
+            "options": [
+                "A. Sel - organ - jaringan - sistem organ - individu",
+                "B. Sel - jaringan - organ - sistem organ - individu",
+                "C. Jaringan - sel - organ - individu - sistem organ",
+                "D. Organ - sel - jaringan - individu - sistem organ"
+            ],
+            "answer": "B",
+            "Explanation": "Tingkatan organisasi kehidupan dimulai dari sel, kemudian jaringan, organ, sistem organ, dan akhirnya individu."
+        },
+        "13": {
+            "question": "Makhluk hidup disebut heterotrof jika …",
+            "options": [
+                "A. Dapat membuat makanannya sendiri",
+                "B. Mendapatkan makanan dari organisme lain",
+                "C. Tidak membutuhkan oksigen",
+                "D. Hidup tanpa cahaya"
+            ],
+            "answer": "B",
+            "Explanation": "Heterotrof adalah makhluk hidup yang tidak dapat membuat makanannya sendiri dan harus mendapatkan nutrisi dari organisme lain."
+        },
+        "14": {
+            "question": "Zat makanan yang berfungsi memperbaiki sel-sel tubuh yang rusak adalah …",
+            "options": [
+                "A. Karbohidrat",
+                "B. Lemak",
+                "C. Protein",
+                "D. Vitamin"
+            ],
+            "answer": "C",
+            "Explanation": "Protein berperan penting dalam memperbaiki dan membangun sel-sel tubuh yang rusak serta mendukung pertumbuhan."
+        },
+        "15": {
+            "question": "Fungsi utama stomata pada daun adalah …",
+            "options": [
+                "A. Menyerap air dari udara",
+                "B. Mengatur pertukaran gas dan penguapan air",
+                "C. Menyimpan cadangan makanan",
+                "D. Menguatkan struktur daun"
+            ],
+            "answer": "B",
+            "Explanation": "Stomata adalah pori-pori kecil pada permukaan daun yang berfungsi mengatur pertukaran gas (oksigen dan karbon dioksida) serta penguapan air dari daun."
+        }
+    },
+    "Kimia": {
+        "1": {
+            "question": "Zat yang tidak dapat diuraikan menjadi zat lain yang lebih sederhana disebut …",
+            "options": [
+                "a. Senyawa",
+                "b. Campuran",
+                "c. Unsur",
+                "d. Molekul"
+            ],
+            "answer": "c",
+            "Explanation": "Unsur adalah zat yang tidak dapat diuraikan menjadi zat lain yang lebih sederhana melalui reaksi kimia."
+        },
+        "2": {
+            "question": "H2O adalah rumus kimia dari …",
+            "options": [
+                "a. Hidrogen",
+                "b. Air",
+                "c. Asam",
+                "d. Oksigen"
+            ],
+            "answer": "b",
+            "Explanation": "H2O adalah rumus kimia untuk air, yang terdiri dari dua atom hidrogen dan satu atom oksigen."
+        },
+        "3": {
+            "question": "Zat yang terbentuk dari dua atau lebih unsur yang bergabung secara kimia disebut …",
+            "options": [
+                "a. Campuran",
+                "b. Senyawa",
+                "c. Larutan",
+                "d. Unsur"
+            ],
+            "answer": "b",
+            "Explanation": "Senyawa adalah zat yang terbentuk dari dua atau lebih unsur yang bergabung secara kimia dengan perbandingan tertentu."
+        },
+        "4": {
+            "question": "Contoh perubahan fisika adalah …",
+            "options": [
+                "a. Besi berkarat",
+                "b. Kayu dibakar",
+                "c. Es mencair",
+                "d. Telur digoreng"
+            ],
+            "answer": "c",
+            "Explanation": "Es mencair adalah contoh perubahan fisika karena hanya terjadi perubahan wujud dari padat menjadi cair tanpa mengubah komposisi kimianya."
+        },
+        "5": {
+            "question": "Proses terbentuknya karat pada besi merupakan contoh …",
+            "options": [
+                "a. Perubahan fisika",
+                "b. Perubahan kimia",
+                "c. Penguapan",
+                "d. Penyubliman"
+            ],
+            "answer": "b",
+            "Explanation": "Proses terbentuknya karat pada besi adalah contoh perubahan kimia karena melibatkan reaksi antara besi, air, dan oksigen yang menghasilkan zat baru yaitu karat (besi oksida)."
+        },
+        "6": {
+            "question": "Atom terdiri atas tiga partikel utama, yaitu …",
+            "options": [
+                "a. Proton, elektron, dan ion",
+                "b. Proton, neutron, dan elektron",
+                "c. Neutron, molekul, dan ion",
+                "d. Proton, atom, dan senyawa"
+            ],
+            "answer": "b",
+            "Explanation": "Atom terdiri atas tiga partikel utama yaitu proton (bermuatan positif), neutron (tidak bermuatan), dan elektron (bermuatan negatif)."
+        },
+        "7": {
+            "question": "Gas yang dibutuhkan manusia untuk bernapas adalah …",
+            "options": [
+                "a. Karbon dioksida",
+                "b. Hidrogen",
+                "c. Oksigen",
+                "d. Nitrogen"
+            ],
+            "answer": "c",
+            "Explanation": "Oksigen adalah gas yang dibutuhkan manusia untuk bernapas dan digunakan dalam proses respirasi seluler."
+        },
+        "8": {
+            "question": "Zat yang dapat larut sempurna dalam air disebut …",
+            "options": [
+                "a. Suspensi",
+                "b. Larutan",
+                "c. Emulsi",
+                "d. Koloid"
+            ],
+            "answer": "b",
+            "Explanation": "Larutan adalah campuran homogen di mana zat terlarut larut sempurna dalam pelarut, seperti garam yang larut dalam air."
+        },
+        "9": {
+            "question": "Senyawa karbon dioksida memiliki rumus kimia …",
+            "options": [
+                "a. CO",
+                "b. CO₂",
+                "c. C₂O",
+                "d. C₂H₆"
+            ],
+            "answer": "b",
+            "Explanation": "Rumus kimia karbon dioksida adalah CO₂, yang terdiri dari satu atom karbon dan dua atom oksigen."
+        },
+        "10": {
+            "question": "pH < 7 menunjukkan sifat larutan yang …",
+            "options": [
+                "a. Netral",
+                "b. Asam",
+                "c. Basa",
+                "d. Garam"
+            ],
+            "answer": "b",
+            "Explanation": "Larutan dengan pH kurang dari 7 bersifat asam, sedangkan larutan dengan pH lebih dari 7 bersifat basa, dan pH 7 adalah netral."
+        },
+        "11": {
+            "question": "Zat yang dapat menetralkan asam disebut …",
+            "options": [
+                "a. Garam",
+                "b. Basa",
+                "c. Alkohol",
+                "d. Logam"
+            ],
+            "answer": "b",
+            "Explanation": "Basa adalah zat yang dapat menetralkan asam dengan cara bereaksi dengannya untuk membentuk garam dan air."
+        },
+        "12": {
+            "question": "Benda padat yang dapat menghantarkan listrik dengan baik adalah …",
+            "options": [
+                "a. Kayu",
+                "b. Karet",
+                "c. Logam",
+                "d. Kaca"
+            ],
+            "answer": "c",
+            "Explanation": "Logam adalah benda padat yang dapat menghantarkan listrik dengan baik karena memiliki elektron bebas yang dapat bergerak dengan mudah."
+        },
+        "13": {
+            "question": "Contoh zat yang termasuk campuran homogen adalah …",
+            "options": [
+                "a. Pasir dan air",
+                "b. Gula yang larut dalam air",
+                "c. Minyak dan air",
+                "d. Air dan pasir"
+            ],
+            "answer": "b",
+            "Explanation": "Gula yang larut dalam air membentuk campuran homogen karena gula terdistribusi merata dalam air, sehingga tidak terlihat perbedaan antara zat terlarut dan pelarut."
+        },
+        "14": {
+            "question": "Perubahan wujud dari gas menjadi cair disebut …",
+            "options": [
+                "a. Penguapan",
+                "b. Kondensasi",
+                "c. Penyubliman",
+                "d. Pembekuan"
+            ],
+            "answer": "b",
+            "Explanation": "Kondensasi adalah proses perubahan wujud zat dari gas menjadi cair, seperti terbentuknya embun pada permukaan dingin."
+        },
+        "15": {
+            "question": "Unsur paling banyak di udara bumi adalah …",
+            "options": [
+                "a. Oksigen",
+                "b. Karbon dioksida",
+                "c. Nitrogen",
+                "d. Hidrogen"
+            ],
+            "answer": "c",
+            "Explanation": "Nitrogen adalah unsur paling banyak di udara bumi, menyusun sekitar 78% dari komposisi atmosfer."
+        }
+    },
+    "Matematika": {
+        "1": {
+            "question": "Hasil dari 36 ÷ 6 × 3 adalah …",
+            "options": [
+                "a. 6",
+                "b. 9",
+                "c. 18",
+                "d. 12"
+            ],
+            "answer": "c",
+            "Explanation": "36 ÷ 6 = 6, kemudian 6 × 3 = 18."
+        },
+        "2": {
+            "question": "Nilai dari 2³ + 4² adalah …",
+            "options": [
+                "a. 16",
+                "b. 20",
+                "c. 24",
+                "d. 28"
+            ],
+            "answer": "c",
+            "Explanation": "2³ = 8 dan 4² = 16, sehingga 8 + 16 = 24."
+        },
+        "3": {
+            "question": "Jika 2/3 dari suatu bilangan adalah 12, maka bilangan itu adalah …",
+            "options": [
+                "a. 16",
+                "b. 18",
+                "c. 28",
+                "d. 20"
+            ],
+            "answer": "b",
+            "Explanation": "Jika ⅔ x = 12, maka x = 12 × (3/2) = 18."
+        },
+        "4": {
+            "question": "Nilai dari √81 adalah …",
+            "options": [
+                "a. 8",
+                "b. 9",
+                "c. 10",
+                "d. 7"
+            ],
+            "answer": "b",
+            "Explanation": "√81 = 9."
+        },
+        "5": {
+            "question": "Sebuah persegi memiliki sisi 12 cm. Kelilingnya adalah …",
+            "options": [
+                "a. 36 cm",
+                "b. 48 cm",
+                "c. 60 cm",
+                "d. 24 cm"
+            ],
+            "answer": "b",
+            "Explanation": "Keliling persegi = 4 × sisi = 4 × 12 cm = 48 cm."
+        },
+        "6": {
+            "question": "Bilangan prima antara 20 dan 30 adalah …",
+            "options": [
+                "a. 21 dan 27",
+                "b. 22 dan 26",
+                "c. 23 dan 29",
+                "d. 25 dan 27"
+            ],
+            "answer": "c",
+            "Explanation": "Bilangan prima antara 20 dan 30 adalah 23 dan 29."
+        },
+        "7": {
+            "question": "Hasil dari (15 + 5) × 2 – 8 adalah …",
+            "options": [
+                "a. 24",
+                "b. 32",
+                "c. 30",
+                "d. 28"
+            ],
+            "answer": "b",
+            "Explanation": "(15 + 5) = 20, kemudian 20 × 2 = 40, lalu 40 – 8 = 32."
+        },
+        "8": {
+            "question": "Rata-rata dari 5, 10, 15, 20, dan 25 adalah …",
+            "options": [
+                "a. 10",
+                "b. 15",
+                "c. 18",
+                "d. 20"
+            ],
+            "answer": "b",
+            "Explanation": "Rata-rata = (5 + 10 + 15 + 20 + 25) ÷ 5 = 75 ÷ 5 = 15."
+        },
+        "9": {
+            "question": "Suatu segitiga memiliki alas 8 cm dan tinggi 6 cm. Luasnya adalah …",
+            "options": [
+                "a. 24 cm²",
+                "b. 24 cm²",
+                "c. 28 cm²",
+                "d. 30 cm²"
+            ],
+            "answer": "b",
+            "Explanation": "Luas segitiga = ½ × alas × tinggi = ½ × 8 cm × 6 cm = 24 cm²."
+        },
+        "10": {
+            "question": "Jika sebuah lingkaran memiliki jari-jari 7 cm, maka kelilingnya adalah (gunakan π = 22/7)",
+            "options": [
+                "a. 44 cm",
+                "b. 44 cm",
+                "c. 49 cm",
+                "d. 50 cm"
+            ],
+            "answer": "a",
+            "Explanation": "Keliling lingkaran = 2πr = 2 × (22/7) × 7 cm = 44 cm."
+        },
+        "11": {
+            "question": "Nilai dari 0,25 × 0,4 adalah …",
+            "options": [
+                "a. 0,01",
+                "b. 0,05",
+                "c. 0,10",
+                "d. 0,12"
+            ],
+            "answer": "c",
+            "Explanation": "0,25 × 0,4 = 0,10."
+        },
+        "12": {
+            "question": "Perbandingan umur Andi dan Budi adalah 3 : Jika jumlah umur mereka 32 tahun, maka umur Andi adalah …",
+            "options": [
+                "a. 10 tahun",
+                "b. 12 tahun",
+                "c. 15 tahun",
+                "d. 18 tahun"
+            ],
+            "answer": "b",
+            "Explanation": "Jumlah perbandingan = 3 + 5 = Umur Andi = (3/8) × 32 = 12 tahun."
+        },
+        "13": {
+            "question": "Jika 4x – 6 = 10, maka nilai x adalah …",
+            "options": [
+                "a. 3",
+                "b. 4",
+                "c. 5",
+                "d. 6"
+            ],
+            "answer": "b",
+            "Explanation": "4x – 6 = 10 → 4x = 16 → x = 16 ÷ 4 = 4."
+        },
+        "14": {
+            "question": "Sudut-sudut pada segitiga berjumlah …",
+            "options": [
+                "a. 90°",
+                "b. 180°",
+                "c. 270°",
+                "d. 360°"
+            ],
+            "answer": "b",
+            "Explanation": "Jumlah sudut pada segitiga selalu 180°."
+        },
+        "15": {
+            "question": "Nilai dari 5² – 3² adalah …",
+            "options": [
+                "a. 9",
+                "b. 16",
+                "c. 18",
+                "d. 25"
+            ],
+            "answer": "b",
+            "Explanation": "5² = 25 dan 3² = 9, sehingga 25 – 9 = 16."
+        }
+    }
+}
