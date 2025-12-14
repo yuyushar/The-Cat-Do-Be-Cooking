@@ -2,7 +2,7 @@ extends Control
 
 var locations = {
 	"MenuButton": {"label": "Rumah", "scene": "res://Scene/MainMenu.tscn"},
-	"KitchenButton": {"label": "Dapur Kucing", "scene": "res://Scene/Kitchen.tscn"},
+	"KitchenButton": {"label": "Dapur", "scene": "res://Scene/Kitchen.tscn"},
 	"LibraryButton": {"label": "Perpustakaan", "scene": "res://Scene/Library.tscn"}
 }
 

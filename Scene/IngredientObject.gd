@@ -1,65 +1,89 @@
 extends Node2D
 
-var nama_bahan = "" # Nanti diisi saat spawn (misal: "Daging")
+var nama_bahan = "" 
 var is_dragging = false
-var original_position = Vector2.ZERO # Posisi awal untuk balik kalau gagal
-var target_pot = null # Menyimpan referensi panci
 
 func _ready():
-	# Simpan posisi awal saat muncul
-	original_position = global_position
-	
-	# Koneksi tombol klik
-	$ClickButton.connect("button_down", self, "_on_clicked")
-	$ClickButton.connect("button_up", self, "_on_released")
+	add_to_group("Ingredients")
+	# Pastikan sinyal terhubung untuk layering visual saat drag
+	if has_node("Area2D"):
+		$Area2D.connect("area_entered", self, "_on_area_entered")
+		$Area2D.connect("area_exited", self, "_on_area_exited")
 
-func setup(nama, texture_path):
-	nama_bahan = nama
-	$Sprite.texture = load(texture_path)
-
-func _process(delta):
+func _process(_delta):
 	if is_dragging:
-		# Bahan mengikuti posisi mouse
-		global_position = get_global_mouse_position()
+		global_position = get_global_mouse_position() 
 
-func _on_clicked():
+func setup_bahan(nama, texture_path):
+	nama_bahan = nama
+	var tex = load(texture_path)
+	$Sprite.texture = tex
+	
+	# Scaling agar ukuran seragam 158px
+	var target_dimensi = 158.0
+	var original_size = tex.get_size()
+	var max_side = max(original_size.x, original_size.y)
+	var scale_factor = target_dimensi / max_side
+	$Sprite.scale = Vector2(scale_factor, scale_factor)
+	
 	is_dragging = true
-	scale = Vector2(1.2, 1.2) # Efek membesar dikit pas diangkat
-	z_index = 10 # Supaya gambarnya ada di paling depan (di atas panci dll)
+	z_index = 10 # Di depan segalanya saat awal drag
 
-func _on_released():
-	is_dragging = false
-	scale = Vector2(1, 1) # Balik ukuran normal
-	z_index = 0
-	
-	# Cek apakah kita sedang berada di atas panci?
-	# Logic ini ditangani oleh Area2D Panci (lihat script PotArea di atas)
-	
-	# Beri jeda sedikit, kalau tidak masuk panci, balik ke rak
-	yield(get_tree().create_timer(0.1), "timeout")
-	if target_pot == null:
-		return_to_shelf()
+func _input(event):
+	if event is InputEventMouseButton and not event.pressed:
+		if is_dragging:
+			# KUNCI: Panggil fungsi lokasi jatuh, bukan area jatuh
+			cek_lokasi_jatuh()
 
-# Fungsi dipanggil oleh Panci jika bahan berhasil masuk
-func snap_to_pot(pot_node):
-	target_pot = pot_node
+func cek_lokasi_jatuh():
+	is_dragging = false 
 	
-	# Matikan interaksi
-	$ClickButton.disabled = true
+	# Ambil referensi PotArea di Kitchen
+	# Asumsi IngredientObject adalah anak langsung dari Kitchen
+	var pot = get_parent().get_node("PotArea") 
 	
-	# Animasi masuk ke panci (mengecil dan hilang)
+	var pot_x_center = pot.global_position.x
+	# Target jatuh ke dasar panci (Y panci + offset ke bawah)
+	var target_y = pot.global_position.y + 120 
+	
+	# Toleransi lebar lubang panci
+	var lebar_lubang = 100.0 
+	
+	# Cek apakah X bahan berada di dalam area mulut panci
+	if abs(global_position.x - pot_x_center) < lebar_lubang:
+		# SUKSES: Jalankan animasi jatuh
+		animasi_jatuh_ke_panci(target_y)
+		# Kirim posisi jatuh ke Kitchen
+		get_parent().tambah_bahan_ke_list(nama_bahan, Vector2(global_position.x, target_y))
+	else:
+		# GAGAL: Terbuang ke samping
+		animasi_buang()
+
+func animasi_jatuh_ke_panci(pos_y_target):
+	# Pindah ke belakang bibir panci (PotFront Z=5)
+	z_index = 4 
+	
 	var tween = create_tween()
-	tween.tween_property(self, "global_position", pot_node.global_position, 0.2)
-	tween.parallel().tween_property(self, "scale", Vector2(0,0), 0.2)
+	# Animasi jatuh ke bawah
+	tween.tween_property(self, "global_position:y", pos_y_target, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# Sambil mengecil agar seolah masuk ke dalam air
+	tween.parallel().tween_property(self, "scale", Vector2(0, 0), 0.4)
+	tween.parallel().tween_property(self, "modulate:a", 0, 0.4)
+	
 	yield(tween, "finished")
-	
-	# Masukkan data ke panci
-	pot_node.add_ingredient_data(nama_bahan)
-	
-	# Hapus objek bahan ini
 	queue_free()
 
-func return_to_shelf():
-	# Animasi balik ke tempat asal
+func animasi_buang():
 	var tween = create_tween()
-	tween.tween_property(self, "global_position", original_position, 0.3).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(self, "modulate:a", 0, 0.3)
+	yield(tween, "finished")
+	queue_free()
+
+# --- Layering Visual saat Drag ---
+func _on_area_entered(area):
+	if area.name == "VisualPotArea" or area.name == "PotArea":
+		z_index = 4 # Masuk ke belakang bibir panci
+
+func _on_area_exited(area):
+	if area.name == "VisualPotArea" or area.name == "PotArea":
+		z_index = 10 # Keluar ke depan lagi

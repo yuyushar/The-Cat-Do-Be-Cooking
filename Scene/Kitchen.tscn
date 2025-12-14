@@ -1,9 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=187 format=2]
 
 [ext_resource path="res://asset/kitchen/bg_kitchen.png" type="Texture" id=1]
 [ext_resource path="res://asset/kitchen/string.png" type="Texture" id=2]
 [ext_resource path="res://asset/kitchen/order.png" type="Texture" id=3]
-[ext_resource path="res://asset/title/title_char.png" type="Texture" id=4]
+[ext_resource path="res://Scene/IngredientObject.tscn" type="PackedScene" id=4]
 [ext_resource path="res://asset/kitchen/npc_6.png" type="Texture" id=5]
 [ext_resource path="res://asset/kitchen/spoon.png" type="Texture" id=6]
 [ext_resource path="res://asset/kitchen/recipe.png" type="Texture" id=7]
@@ -11,15 +11,225 @@
 [ext_resource path="res://asset/kitchen/npc_3.png" type="Texture" id=9]
 [ext_resource path="res://asset/kitchen/npc_2.png" type="Texture" id=10]
 [ext_resource path="res://asset/kitchen/self_ingredient.png" type="Texture" id=11]
-[ext_resource path="res://asset/kitchen/pot.png" type="Texture" id=12]
+[ext_resource path="res://asset/cook/idle/idle_cook0001.png" type="Texture" id=12]
 [ext_resource path="res://asset/kitchen/npc_5.png" type="Texture" id=13]
 [ext_resource path="res://asset/kitchen/npc_1.png" type="Texture" id=14]
 [ext_resource path="res://Scene/Kitchen.gd" type="Script" id=15]
 [ext_resource path="res://Scene/PotArea.gd" type="Script" id=16]
-[ext_resource path="res://Scene/IngredientObject.tscn" type="PackedScene" id=17]
+[ext_resource path="res://asset/cook/idle/idle_cook0002.png" type="Texture" id=17]
+[ext_resource path="res://asset/kitchen/pot_front.png" type="Texture" id=18]
+[ext_resource path="res://asset/Perpus/book/open/book_open (1).png" type="Texture" id=19]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (3).png" type="Texture" id=20]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (5).png" type="Texture" id=21]
+[ext_resource path="res://asset/Perpus/book/close/book_close (4).png" type="Texture" id=22]
+[ext_resource path="res://asset/Perpus/book/open/book_open (6).png" type="Texture" id=23]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (1).png" type="Texture" id=24]
+[ext_resource path="res://asset/Perpus/book/close/book_close (5).png" type="Texture" id=25]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (2).png" type="Texture" id=26]
+[ext_resource path="res://asset/Perpus/book/open/book_open (5).png" type="Texture" id=27]
+[ext_resource path="res://asset/Perpus/book/close/book_close (6).png" type="Texture" id=28]
+[ext_resource path="res://asset/Perpus/book/close/book_close (3).png" type="Texture" id=29]
+[ext_resource path="res://asset/Perpus/book/close/book_close (2).png" type="Texture" id=30]
+[ext_resource path="res://asset/Perpus/book/open/book_open (2).png" type="Texture" id=31]
+[ext_resource path="res://asset/Perpus/book/close/book_close (1).png" type="Texture" id=32]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (4).png" type="Texture" id=33]
+[ext_resource path="res://asset/Perpus/book/paper/book_paper (6).png" type="Texture" id=34]
+[ext_resource path="res://asset/Perpus/book/open/book_open (3).png" type="Texture" id=35]
+[ext_resource path="res://asset/Perpus/book/open/book_open (4).png" type="Texture" id=36]
+[ext_resource path="res://asset/cook/idle/idle_cook0005.png" type="Texture" id=37]
+[ext_resource path="res://asset/cook/idle/idle_cook0006.png" type="Texture" id=38]
+[ext_resource path="res://asset/cook/idle/idle_cook0009.png" type="Texture" id=39]
+[ext_resource path="res://asset/cook/idle/idle_cook0011.png" type="Texture" id=40]
+[ext_resource path="res://asset/cook/idle/idle_cook0003.png" type="Texture" id=41]
+[ext_resource path="res://asset/cook/idle/idle_cook0004.png" type="Texture" id=42]
+[ext_resource path="res://asset/cook/idle/idle_cook0012.png" type="Texture" id=43]
+[ext_resource path="res://asset/cook/idle/idle_cook0010.png" type="Texture" id=44]
+[ext_resource path="res://asset/cook/idle/idle_cook0008.png" type="Texture" id=45]
+[ext_resource path="res://asset/cook/idle/idle_cook0013.png" type="Texture" id=46]
+[ext_resource path="res://asset/cook/idle/idle_cook0014.png" type="Texture" id=47]
+[ext_resource path="res://asset/cook/idle/idle_cook0007.png" type="Texture" id=48]
+[ext_resource path="res://asset/cook/idle/idle_cook0016.png" type="Texture" id=49]
+[ext_resource path="res://asset/cook/idle/idle_cook0021.png" type="Texture" id=50]
+[ext_resource path="res://asset/cook/idle/idle_cook0017.png" type="Texture" id=51]
+[ext_resource path="res://asset/cook/idle/idle_cook0024.png" type="Texture" id=52]
+[ext_resource path="res://asset/cook/idle/idle_cook0026.png" type="Texture" id=53]
+[ext_resource path="res://asset/cook/idle/idle_cook0018.png" type="Texture" id=54]
+[ext_resource path="res://asset/cook/idle/idle_cook0015.png" type="Texture" id=55]
+[ext_resource path="res://asset/cook/idle/idle_cook0019.png" type="Texture" id=56]
+[ext_resource path="res://asset/cook/idle/idle_cook0020.png" type="Texture" id=57]
+[ext_resource path="res://asset/cook/idle/idle_cook0022.png" type="Texture" id=58]
+[ext_resource path="res://asset/cook/idle/idle_cook0023.png" type="Texture" id=59]
+[ext_resource path="res://asset/cook/idle/idle_cook0025.png" type="Texture" id=60]
+[ext_resource path="res://asset/cook/idle/idle_cook0027.png" type="Texture" id=61]
+[ext_resource path="res://asset/cook/idle/idle_cook0028.png" type="Texture" id=62]
+[ext_resource path="res://asset/cook/idle/idle_cook0029.png" type="Texture" id=63]
+[ext_resource path="res://asset/cook/idle/idle_cook0048.png" type="Texture" id=64]
+[ext_resource path="res://asset/cook/idle/idle_cook0047.png" type="Texture" id=65]
+[ext_resource path="res://asset/cook/loop/loop_cook0001.png" type="Texture" id=66]
+[ext_resource path="res://asset/cook/idle/idle_cook0044.png" type="Texture" id=67]
+[ext_resource path="res://asset/cook/idle/idle_cook0045.png" type="Texture" id=68]
+[ext_resource path="res://asset/cook/idle/idle_cook0046.png" type="Texture" id=69]
+[ext_resource path="res://asset/cook/idle/idle_cook0033.png" type="Texture" id=70]
+[ext_resource path="res://asset/cook/idle/idle_cook0030.png" type="Texture" id=71]
+[ext_resource path="res://asset/cook/idle/idle_cook0031.png" type="Texture" id=72]
+[ext_resource path="res://asset/cook/idle/idle_cook0032.png" type="Texture" id=73]
+[ext_resource path="res://asset/cook/idle/idle_cook0036.png" type="Texture" id=74]
+[ext_resource path="res://asset/cook/idle/idle_cook0034.png" type="Texture" id=75]
+[ext_resource path="res://asset/cook/idle/idle_cook0037.png" type="Texture" id=76]
+[ext_resource path="res://asset/cook/idle/idle_cook0040.png" type="Texture" id=77]
+[ext_resource path="res://asset/cook/idle/idle_cook0038.png" type="Texture" id=78]
+[ext_resource path="res://asset/cook/idle/idle_cook0041.png" type="Texture" id=79]
+[ext_resource path="res://asset/cook/idle/idle_cook0042.png" type="Texture" id=80]
+[ext_resource path="res://asset/cook/idle/idle_cook0039.png" type="Texture" id=81]
+[ext_resource path="res://asset/cook/idle/idle_cook0035.png" type="Texture" id=82]
+[ext_resource path="res://asset/cook/idle/idle_cook0043.png" type="Texture" id=83]
+[ext_resource path="res://asset/cook/loop/loop_cook0020.png" type="Texture" id=84]
+[ext_resource path="res://asset/cook/loop/loop_cook0011.png" type="Texture" id=85]
+[ext_resource path="res://asset/cook/loop/loop_cook0007.png" type="Texture" id=86]
+[ext_resource path="res://asset/cook/loop/loop_cook0035.png" type="Texture" id=87]
+[ext_resource path="res://asset/cook/loop/loop_cook0025.png" type="Texture" id=88]
+[ext_resource path="res://asset/cook/loop/loop_cook0009.png" type="Texture" id=89]
+[ext_resource path="res://asset/cook/loop/loop_cook0010.png" type="Texture" id=90]
+[ext_resource path="res://asset/cook/loop/loop_cook0015.png" type="Texture" id=91]
+[ext_resource path="res://asset/cook/loop/loop_cook0017.png" type="Texture" id=92]
+[ext_resource path="res://asset/cook/loop/loop_cook0021.png" type="Texture" id=93]
+[ext_resource path="res://asset/cook/loop/loop_cook0016.png" type="Texture" id=94]
+[ext_resource path="res://asset/cook/loop/loop_cook0032.png" type="Texture" id=95]
+[ext_resource path="res://asset/cook/loop/loop_cook0034.png" type="Texture" id=96]
+[ext_resource path="res://asset/cook/loop/loop_cook0003.png" type="Texture" id=97]
+[ext_resource path="res://asset/cook/loop/loop_cook0014.png" type="Texture" id=98]
+[ext_resource path="res://asset/cook/loop/loop_cook0033.png" type="Texture" id=99]
+[ext_resource path="res://asset/cook/loop/loop_cook0041.png" type="Texture" id=100]
+[ext_resource path="res://asset/cook/loop/loop_cook0022.png" type="Texture" id=101]
+[ext_resource path="res://asset/cook/loop/loop_cook0038.png" type="Texture" id=102]
+[ext_resource path="res://asset/cook/loop/loop_cook0008.png" type="Texture" id=103]
+[ext_resource path="res://asset/cook/loop/loop_cook0013.png" type="Texture" id=104]
+[ext_resource path="res://asset/cook/loop/loop_cook0042.png" type="Texture" id=105]
+[ext_resource path="res://asset/cook/loop/loop_cook0018.png" type="Texture" id=106]
+[ext_resource path="res://asset/cook/loop/loop_cook0027.png" type="Texture" id=107]
+[ext_resource path="res://asset/cook/loop/loop_cook0012.png" type="Texture" id=108]
+[ext_resource path="res://asset/cook/loop/loop_cook0002.png" type="Texture" id=109]
+[ext_resource path="res://asset/cook/loop/loop_cook0023.png" type="Texture" id=110]
+[ext_resource path="res://asset/cook/loop/loop_cook0026.png" type="Texture" id=111]
+[ext_resource path="res://asset/cook/loop/loop_cook0006.png" type="Texture" id=112]
+[ext_resource path="res://asset/cook/loop/loop_cook0028.png" type="Texture" id=113]
+[ext_resource path="res://asset/cook/loop/loop_cook0005.png" type="Texture" id=114]
+[ext_resource path="res://asset/cook/loop/loop_cook0004.png" type="Texture" id=115]
+[ext_resource path="res://asset/cook/loop/loop_cook0019.png" type="Texture" id=116]
+[ext_resource path="res://asset/cook/loop/loop_cook0024.png" type="Texture" id=117]
+[ext_resource path="res://asset/cook/loop/loop_cook0029.png" type="Texture" id=118]
+[ext_resource path="res://asset/cook/loop/loop_cook0030.png" type="Texture" id=119]
+[ext_resource path="res://asset/cook/loop/loop_cook0031.png" type="Texture" id=120]
+[ext_resource path="res://asset/cook/loop/loop_cook0039.png" type="Texture" id=121]
+[ext_resource path="res://asset/cook/loop/loop_cook0040.png" type="Texture" id=122]
+[ext_resource path="res://asset/cook/loop/loop_cook0043.png" type="Texture" id=123]
+[ext_resource path="res://asset/cook/loop/loop_cook0044.png" type="Texture" id=124]
+[ext_resource path="res://asset/cook/loop/loop_cook0045.png" type="Texture" id=125]
+[ext_resource path="res://asset/cook/loop/loop_cook0047.png" type="Texture" id=126]
+[ext_resource path="res://asset/cook/loop/loop_cook0048.png" type="Texture" id=127]
+[ext_resource path="res://asset/cook/loop/loop_cook0036.png" type="Texture" id=128]
+[ext_resource path="res://asset/cook/loop/loop_cook0037.png" type="Texture" id=129]
+[ext_resource path="res://asset/cook/loop/loop_cook0046.png" type="Texture" id=130]
+[ext_resource path="res://asset/cook/loop/loop_cook0049.png" type="Texture" id=131]
+[ext_resource path="res://asset/cook/start/start_cook0001.png" type="Texture" id=132]
+[ext_resource path="res://asset/cook/start/start_cook0005.png" type="Texture" id=133]
+[ext_resource path="res://asset/cook/start/start_cook0002.png" type="Texture" id=134]
+[ext_resource path="res://asset/cook/start/start_cook0003.png" type="Texture" id=135]
+[ext_resource path="res://asset/cook/start/start_cook0004.png" type="Texture" id=136]
+[ext_resource path="res://asset/cook/start/start_cook0006.png" type="Texture" id=137]
+[ext_resource path="res://asset/cook/start/start_cook0007.png" type="Texture" id=138]
+[ext_resource path="res://asset/cook/start/start_cook0008.png" type="Texture" id=139]
+[ext_resource path="res://asset/cook/start/start_cook0009.png" type="Texture" id=140]
+[ext_resource path="res://asset/cook/start/start_cook0010.png" type="Texture" id=141]
+[ext_resource path="res://asset/cook/finish/finish_cook12.png" type="Texture" id=142]
+[ext_resource path="res://asset/cook/finish/finish_cook16.png" type="Texture" id=143]
+[ext_resource path="res://asset/cook/start/start_cook0023.png" type="Texture" id=144]
+[ext_resource path="res://asset/cook/finish/finish_cook18.png" type="Texture" id=145]
+[ext_resource path="res://asset/cook/finish/finish_cook01.png" type="Texture" id=146]
+[ext_resource path="res://asset/cook/finish/finish_cook10.png" type="Texture" id=147]
+[ext_resource path="res://asset/cook/finish/finish_cook17.png" type="Texture" id=148]
+[ext_resource path="res://asset/cook/start/start_cook0025.png" type="Texture" id=149]
+[ext_resource path="res://asset/cook/finish/finish_cook04.png" type="Texture" id=150]
+[ext_resource path="res://asset/cook/start/start_cook0019.png" type="Texture" id=151]
+[ext_resource path="res://asset/cook/start/start_cook0018.png" type="Texture" id=152]
+[ext_resource path="res://asset/cook/start/start_cook0022.png" type="Texture" id=153]
+[ext_resource path="res://asset/cook/start/start_cook0011.png" type="Texture" id=154]
+[ext_resource path="res://asset/cook/start/start_cook0017.png" type="Texture" id=155]
+[ext_resource path="res://asset/cook/start/start_cook0024.png" type="Texture" id=156]
+[ext_resource path="res://asset/cook/finish/finish_cook02.png" type="Texture" id=157]
+[ext_resource path="res://asset/cook/start/start_cook0021.png" type="Texture" id=158]
+[ext_resource path="res://asset/cook/finish/finish_cook07.png" type="Texture" id=159]
+[ext_resource path="res://asset/cook/finish/finish_cook14.png" type="Texture" id=160]
+[ext_resource path="res://asset/cook/finish/finish_cook25.png" type="Texture" id=162]
+[ext_resource path="res://asset/cook/start/start_cook0016.png" type="Texture" id=163]
+[ext_resource path="res://asset/cook/start/start_cook0015.png" type="Texture" id=164]
+[ext_resource path="res://asset/cook/finish/finish_cook13.png" type="Texture" id=165]
+[ext_resource path="res://asset/cook/finish/finish_cook11.png" type="Texture" id=166]
+[ext_resource path="res://asset/cook/finish/finish_cook09.png" type="Texture" id=169]
+[ext_resource path="res://asset/cook/finish/finish_cook05.png" type="Texture" id=170]
+[ext_resource path="res://asset/cook/start/start_cook0014.png" type="Texture" id=171]
+[ext_resource path="res://asset/cook/start/start_cook0013.png" type="Texture" id=172]
+[ext_resource path="res://asset/cook/finish/finish_cook06.png" type="Texture" id=173]
+[ext_resource path="res://asset/cook/finish/finish_cook03.png" type="Texture" id=174]
+[ext_resource path="res://asset/cook/finish/finish_cook08.png" type="Texture" id=175]
+[ext_resource path="res://asset/cook/start/start_cook0012.png" type="Texture" id=176]
+[ext_resource path="res://asset/cook/start/start_cook0020.png" type="Texture" id=177]
+[ext_resource path="res://asset/cook/finish/finish_cook15.png" type="Texture" id=178]
+[ext_resource path="res://asset/cook/finish/finish_cook19.png" type="Texture" id=179]
+[ext_resource path="res://asset/cook/finish/finish_cook20.png" type="Texture" id=180]
+[ext_resource path="res://asset/cook/finish/finish_cook21.png" type="Texture" id=181]
+[ext_resource path="res://asset/cook/finish/finish_cook22.png" type="Texture" id=182]
+[ext_resource path="res://asset/cook/finish/finish_cook24.png" type="Texture" id=183]
+[ext_resource path="res://asset/cook/finish/finish_cook23.png" type="Texture" id=186]
+[ext_resource path="res://asset/OCRB.TTF" type="DynamicFontData" id=205]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 47.8339
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.4, 36.5 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 146 ), ExtResource( 157 ), ExtResource( 174 ), ExtResource( 150 ), ExtResource( 170 ), ExtResource( 173 ), ExtResource( 159 ), ExtResource( 175 ), ExtResource( 169 ), ExtResource( 147 ), ExtResource( 166 ), ExtResource( 142 ), ExtResource( 165 ), ExtResource( 160 ), ExtResource( 178 ), ExtResource( 143 ), ExtResource( 148 ), ExtResource( 145 ), ExtResource( 179 ), ExtResource( 180 ), ExtResource( 181 ), ExtResource( 182 ), ExtResource( 186 ), ExtResource( 183 ), ExtResource( 162 ) ],
+"loop": true,
+"name": "finish",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 12 ), ExtResource( 17 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 48 ), ExtResource( 45 ), ExtResource( 39 ), ExtResource( 44 ), ExtResource( 40 ), ExtResource( 43 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 55 ), ExtResource( 49 ), ExtResource( 51 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 57 ), ExtResource( 50 ), ExtResource( 58 ), ExtResource( 59 ), ExtResource( 52 ), ExtResource( 60 ), ExtResource( 53 ), ExtResource( 61 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 71 ), ExtResource( 72 ), ExtResource( 73 ), ExtResource( 70 ), ExtResource( 75 ), ExtResource( 82 ), ExtResource( 74 ), ExtResource( 76 ), ExtResource( 78 ), ExtResource( 81 ), ExtResource( 77 ), ExtResource( 79 ), ExtResource( 80 ), ExtResource( 83 ), ExtResource( 67 ), ExtResource( 68 ), ExtResource( 69 ), ExtResource( 65 ), ExtResource( 64 ) ],
+"loop": true,
+"name": "idle",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 66 ), ExtResource( 109 ), ExtResource( 97 ), ExtResource( 115 ), ExtResource( 114 ), ExtResource( 112 ), ExtResource( 86 ), ExtResource( 103 ), ExtResource( 89 ), ExtResource( 90 ), ExtResource( 85 ), ExtResource( 108 ), ExtResource( 104 ), ExtResource( 98 ), ExtResource( 91 ), ExtResource( 94 ), ExtResource( 92 ), ExtResource( 106 ), ExtResource( 116 ), ExtResource( 84 ), ExtResource( 93 ), ExtResource( 101 ), ExtResource( 110 ), ExtResource( 117 ), ExtResource( 88 ), ExtResource( 111 ), ExtResource( 107 ), ExtResource( 113 ), ExtResource( 118 ), ExtResource( 119 ), ExtResource( 120 ), ExtResource( 95 ), ExtResource( 99 ), ExtResource( 96 ), ExtResource( 87 ), ExtResource( 128 ), ExtResource( 129 ), ExtResource( 102 ), ExtResource( 121 ), ExtResource( 122 ), ExtResource( 100 ), ExtResource( 105 ), ExtResource( 123 ), ExtResource( 124 ), ExtResource( 125 ), ExtResource( 130 ), ExtResource( 126 ), ExtResource( 127 ), ExtResource( 131 ) ],
+"loop": true,
+"name": "loop",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 132 ), ExtResource( 134 ), ExtResource( 135 ), ExtResource( 136 ), ExtResource( 133 ), ExtResource( 137 ), ExtResource( 138 ), ExtResource( 139 ), ExtResource( 140 ), ExtResource( 141 ), ExtResource( 154 ), ExtResource( 176 ), ExtResource( 172 ), ExtResource( 171 ), ExtResource( 164 ), ExtResource( 163 ), ExtResource( 155 ), ExtResource( 152 ), ExtResource( 151 ), ExtResource( 177 ), ExtResource( 158 ), ExtResource( 153 ), ExtResource( 144 ), ExtResource( 156 ), ExtResource( 149 ) ],
+"loop": true,
+"name": "start",
+"speed": 24.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 30 ), ExtResource( 29 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 32 ) ],
+"loop": false,
+"name": "close",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 24 ), ExtResource( 26 ), ExtResource( 20 ), ExtResource( 33 ), ExtResource( 21 ), ExtResource( 34 ) ],
+"loop": false,
+"name": "next",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 19 ), ExtResource( 31 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 23 ) ],
+"loop": false,
+"name": "open",
+"speed": 10.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+size = 24
+font_data = ExtResource( 205 )
 
 [node name="Kitchen" type="Control"]
 anchor_right = 1.0
@@ -76,39 +286,410 @@ visible = false
 position = Vector2( -10.0592, 100.592 )
 texture = ExtResource( 5 )
 
-[node name="TitleChar" type="Sprite" parent="."]
-position = Vector2( 487, 257 )
-scale = Vector2( 0.607629, 0.607629 )
-texture = ExtResource( 4 )
-
 [node name="SelfIngredient" type="Sprite" parent="."]
 position = Vector2( 1101, 421 )
 scale = Vector2( 0.708333, 0.708333 )
 texture = ExtResource( 11 )
 offset = Vector2( -52.2354, -52.2353 )
 
-[node name="Spoon" type="Sprite" parent="."]
-position = Vector2( 106, 480 )
-scale = Vector2( 0.736348, 0.736348 )
-texture = ExtResource( 6 )
-
-[node name="Recipe" type="Sprite" parent="."]
-position = Vector2( 84, 676 )
-scale = Vector2( 0.710109, 0.710109 )
-texture = ExtResource( 7 )
-
-[node name="Pot" type="Sprite" parent="."]
-position = Vector2( 492, 524 )
-scale = Vector2( 0.710109, 0.710109 )
-texture = ExtResource( 12 )
+[node name="Spoon" type="TextureButton" parent="."]
+margin_left = 11.0
+margin_top = 396.0
+margin_right = 167.0
+margin_bottom = 558.0
+texture_normal = ExtResource( 6 )
+expand = true
 
 [node name="PotArea" type="Area2D" parent="."]
+visible = false
 position = Vector2( 495, 600 )
 scale = Vector2( 5, 5 )
 script = ExtResource( 16 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PotArea"]
-position = Vector2( -1.90735e-06, 3.4 )
+[node name="TrashShapeLeft" type="CollisionShape2D" parent="PotArea"]
+position = Vector2( -45.2, 1.6 )
 shape = SubResource( 1 )
 
-[node name="IngredientObject" parent="." instance=ExtResource( 17 )]
+[node name="SuccessShape" type="CollisionShape2D" parent="PotArea"]
+position = Vector2( 1.49999, 37 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="TrashShapeRight" type="CollisionShape2D" parent="PotArea"]
+position = Vector2( 48.8, 2 )
+shape = SubResource( 1 )
+
+[node name="TitleChar" type="AnimatedSprite" parent="."]
+position = Vector2( 498, 398 )
+scale = Vector2( 0.670139, 0.670139 )
+frames = SubResource( 3 )
+animation = "idle"
+playing = true
+
+[node name="IngredientsGrid" type="GridContainer" parent="."]
+margin_left = 832.0
+margin_top = 30.0
+margin_right = 994.0
+margin_bottom = 187.0
+custom_constants/vseparation = 25
+custom_constants/hseparation = 18
+columns = 3
+
+[node name="IngredientObject" parent="." instance=ExtResource( 4 )]
+visible = false
+z_index = 1
+
+[node name="PotFront" type="Sprite" parent="."]
+position = Vector2( 510, 530 )
+scale = Vector2( 0.690281, 0.690281 )
+texture = ExtResource( 18 )
+
+[node name="VisualPotArea" type="Area2D" parent="."]
+visible = false
+position = Vector2( 501, 598 )
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="VisualPotArea"]
+position = Vector2( 495, 629 )
+polygon = PoolVector2Array( -662, -756, -513, -736, -329, -748, -327, -703, -297, -694, -271, -642, -269, -510, -291, -463, -694, -461, -713, -504, -707, -642, -666, -700 )
+
+[node name="Recipe" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.995
+margin_left = 7.0
+margin_top = 561.0
+margin_right = -1194.0
+margin_bottom = -0.160034
+mouse_filter = 2
+
+[node name="Book_animated" type="AnimatedSprite" parent="Recipe"]
+position = Vector2( 623, -243 )
+scale = Vector2( 1.09144, 1.09144 )
+frames = SubResource( 2 )
+animation = "open"
+
+[node name="Pages" type="Control" parent="Recipe"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="Page_Biologi" type="Control" parent="Recipe/Pages"]
+margin_left = 354.0
+margin_top = -381.0
+margin_right = 394.0
+margin_bottom = -341.0
+
+[node name="Slot_Easy" type="VBoxContainer" parent="Recipe/Pages/Page_Biologi"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 76.0
+margin_right = 343.0
+margin_bottom = 76.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
+
+[node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Biologi"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 228.0
+margin_right = 343.0
+margin_bottom = 228.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
+
+[node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Biologi"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 381.0
+margin_right = 343.0
+margin_bottom = 381.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
+
+[node name="Page_Fisika" type="Control" parent="Recipe/Pages"]
+margin_left = 354.0
+margin_top = -381.0
+margin_right = 394.0
+margin_bottom = -341.0
+
+[node name="Slot_Easy" type="VBoxContainer" parent="Recipe/Pages/Page_Fisika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 76.0
+margin_right = 343.0
+margin_bottom = 76.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
+
+[node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Fisika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 228.0
+margin_right = 343.0
+margin_bottom = 228.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
+
+[node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Fisika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 381.0
+margin_right = 343.0
+margin_bottom = 381.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
+
+[node name="Page_Kimia" type="Control" parent="Recipe/Pages"]
+margin_left = 354.0
+margin_top = -381.0
+margin_right = 394.0
+margin_bottom = -341.0
+
+[node name="Slot_Easy" type="VBoxContainer" parent="Recipe/Pages/Page_Kimia"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 76.0
+margin_right = 343.0
+margin_bottom = 76.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
+
+[node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Kimia"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 228.0
+margin_right = 343.0
+margin_bottom = 228.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
+
+[node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Kimia"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 381.0
+margin_right = 343.0
+margin_bottom = 381.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
+
+[node name="Page_Matematika" type="Control" parent="Recipe/Pages"]
+margin_left = 354.0
+margin_top = -381.0
+margin_right = 394.0
+margin_bottom = -341.0
+
+[node name="Slot_Easy" type="VBoxContainer" parent="Recipe/Pages/Page_Matematika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 76.0
+margin_right = 343.0
+margin_bottom = 76.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
+
+[node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Matematika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 228.0
+margin_right = 343.0
+margin_bottom = 228.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
+
+[node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Matematika"]
+anchor_left = 1.338
+anchor_top = -2.25
+anchor_right = 6.1
+anchor_bottom = 0.95
+margin_left = 265.48
+margin_top = 381.0
+margin_right = 343.0
+margin_bottom = 381.0
+
+[node name="Nama" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
+margin_right = 268.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 4 )
+
+[node name="Bahan" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
+margin_top = 25.0
+margin_right = 268.0
+margin_bottom = 39.0
+
+[node name="Sprite" type="Sprite" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
+
+[node name="PrevPage" type="Button" parent="Recipe"]
+margin_left = 338.0
+margin_top = -25.0
+margin_right = 458.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Previous"
+
+[node name="NextPage" type="Button" parent="Recipe"]
+margin_left = 801.0
+margin_top = -24.0
+margin_right = 921.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Next"
+
+[node name="BtnBukaResep" type="TextureButton" parent="."]
+margin_left = 7.0
+margin_top = 561.0
+margin_right = 172.0
+margin_bottom = 764.0
+texture_normal = ExtResource( 7 )
+expand = true
+
+[connection signal="pressed" from="Spoon" to="." method="_on_Spoon_pressed"]
+[connection signal="pressed" from="Recipe/PrevPage" to="." method="_on_PrevPage_pressed"]
+[connection signal="pressed" from="Recipe/NextPage" to="." method="_on_NextPage_pressed"]
+[connection signal="pressed" from="BtnBukaResep" to="." method="_on_BtnBukaResep_pressed"]
