@@ -185,7 +185,7 @@ animations = [ {
 "frames": [ ExtResource( 39 ), ExtResource( 48 ), ExtResource( 75 ), ExtResource( 49 ), ExtResource( 120 ), ExtResource( 73 ), ExtResource( 34 ), ExtResource( 44 ), ExtResource( 117 ), ExtResource( 69 ), ExtResource( 70 ), ExtResource( 118 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 67 ), ExtResource( 72 ), ExtResource( 76 ), ExtResource( 71 ), ExtResource( 116 ), ExtResource( 45 ), ExtResource( 68 ), ExtResource( 119 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 74 ) ],
 "loop": true,
 "name": "blink",
-"speed": 5.0
+"speed": 24.0
 }, {
 "frames": [ ExtResource( 121 ), ExtResource( 115 ), ExtResource( 122 ), ExtResource( 123 ), ExtResource( 65 ), ExtResource( 66 ), ExtResource( 60 ), ExtResource( 64 ), ExtResource( 61 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 79 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 137 ), ExtResource( 52 ), ExtResource( 56 ), ExtResource( 54 ), ExtResource( 58 ), ExtResource( 53 ), ExtResource( 57 ), ExtResource( 59 ), ExtResource( 55 ) ],
 "loop": true,
@@ -391,7 +391,6 @@ scale = Vector2( 0.510204, 0.5 )
 frames = SubResource( 2 )
 
 [node name="QuizUI" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -571,24 +570,26 @@ margin_right = 459.0
 margin_bottom = 254.0
 
 [node name="FoodNameLabel" type="Label" parent="QuizUI/ResultPopup"]
-margin_left = 291.0
+margin_left = 127.0
 margin_top = 264.0
-margin_right = 520.0
+margin_right = 685.0
 margin_bottom = 288.0
 custom_fonts/font = SubResource( 7 )
 align = 1
+valign = 1
 
 [node name="IngredientsLabel" type="Label" parent="QuizUI/ResultPopup"]
-margin_left = 202.0
-margin_top = 286.0
-margin_right = 603.0
-margin_bottom = 378.0
+margin_left = 144.0
+margin_top = 380.0
+margin_right = 670.0
+margin_bottom = 472.0
 align = 1
+valign = 1
 
 [node name="IngredientsContainer" type="HBoxContainer" parent="QuizUI/ResultPopup"]
-margin_left = 352.0
+margin_left = 143.0
 margin_top = 286.0
-margin_right = 455.0
+margin_right = 671.0
 margin_bottom = 393.0
 grow_horizontal = 2
 alignment = 1

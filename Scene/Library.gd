@@ -5,7 +5,7 @@ onready var ui_blocker = $UIBlocker
 # Referensi Node baru sesuai gambar
 onready var result_popup = $QuizUI/ResultPopup
 onready var bad_end_node = $QuizUI/bad_end
-
+onready var bad_end2_node = $QuizUI/bad_end2
 # Variabel Game
 var health = 3
 var total_questions = 0
@@ -363,7 +363,12 @@ func quiz_finished_win():
 	yield(get_tree().create_timer(0.5), "timeout")
 	
 	# Simpan Progress & Resep
-	GameData.unlock_next_difficulty(current_mapel, current_difficulty)
+	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
+	var resep_baru = data["name"]
+	if not resep_baru in GameData.owned_recipes:
+		GameData.owned_recipes.append(resep_baru)
+		print("BERHASIL: Resep " + resep_baru + " ditambahkan ke GameData!")
+	GameData.unlock_next_difficulty(current_mapel, current_difficulty)	
 	# Disini kamu bisa random resep atau set resep fix per level
 	# GameData.owned_recipes.append("Resep Baru") 
 
@@ -438,16 +443,33 @@ func quiz_finished_lose():
 	$QuizUI.get_node("Answer Button").hide()
 	
 	# Mainkan animasi Bad End
+	bad_end_node.hide()
+	bad_end2_node.show()
+	bad_end2_node.frame = 0
+	bad_end_node.get_node("ReturnButton").hide()
+	bad_end_node.get_node("RetryButton").hide()
+	$QuizUI/bad_end2.play("appear")
+	yield($QuizUI/bad_end2, "animation_finished")
+	bad_end2_node.hide()
 	bad_end_node.show()
-	bad_end_node.frame = 0
-	bad_end_node.play("appear") # Pastikan ada animasi ini
-	yield(bad_end_node, "animation_finished")
-	bad_end_node.play("idle")
 	
-	# Munculkan tombol retry/return (pastikan node buttons di dalam bad_end awalnya visible)
 	bad_end_node.get_node("ReturnButton").show()
 	bad_end_node.get_node("RetryButton").show()
-
+	_start_lose_loop()
+func _start_lose_loop():
+	while bad_end_node.visible:
+		# Mainkan Idle
+		bad_end_node.frame = 0
+		bad_end_node.play("idle")
+		yield(bad_end_node, "animation_finished")
+		
+		# Jika player sudah klik retry/keluar, hentikan loop
+		if not bad_end_node.visible: 
+			break
+		
+		# Mainkan Blink
+		bad_end_node.play("blink")
+		yield(bad_end_node, "animation_finished")
 # --- TOMBOL INTERAKSI ---
 func _retry_quiz():
 	# Reset tampilan bad end
@@ -585,3 +607,5 @@ func reset_state():
 		$Book_animated.stop()
 	$Book_animated.frame = 0
 	$Book_animated.animation = ""
+	bad_end2_node.hide()
+	bad_end_node.hide()

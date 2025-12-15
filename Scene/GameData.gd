@@ -90,10 +90,15 @@ func get_recipe_data(mapel, difficulty):
 	else:
 		return {"name": "???", "ing": "???", "desc": "Resep tidak ditemukan"}
 
-# Di GameData.gd
 func get_recipe_by_name(target_name):
+	# Bersihkan nama target dari spasi hantu
+	var clean_target = target_name.strip_edges()
+	
 	for mapel in recipe_database.keys():
 		for diff in recipe_database[mapel].keys():
-			if recipe_database[mapel][diff]["name"] == target_name:
+			var recipe_name = recipe_database[mapel][diff]["name"].strip_edges()
+			if recipe_name == clean_target:
 				return recipe_database[mapel][diff]
+	
+	print("ERROR: Resep '" + clean_target + "' tidak ditemukan di Database!")
 	return null
