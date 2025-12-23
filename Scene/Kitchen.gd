@@ -2,16 +2,17 @@ extends Control
 
 # Memuat template bahan
 onready var ingredient_scene = preload("res://Scene/IngredientObject.tscn")
-var bahan_di_panci = [] # List untuk menampung bahan yang masuk
+var bahan_di_panci = []
 var resep_target_nama = ""
 var bahan_target_list = []
 var customer_count = 0
 var max_customers = 5
-var is_busy = false # Untuk mencegah spam klik yang bikin error
-onready var order_ui = $Order/Control # Mengacu pada susunan NPC kamu
-onready var order_label = $Order/Control/Label # Asumsi ada Label untuk nama pesanan
-onready var recipe_book_ui = $Recipe # Node parent buku resep
+var is_busy = false
+onready var order_ui = $Order/Control
+onready var order_label = $Order/Control/Label
+onready var recipe_book_ui = $Recipe
 onready var day_popup = $DayFinishedPopup
+onready var dark_overlay = $DarkOverlay
 var current_page_index = 0
 onready var pages = [
 	$Recipe/Pages/Page_Biologi,
@@ -19,6 +20,7 @@ onready var pages = [
 	$Recipe/Pages/Page_Kimia,
 	$Recipe/Pages/Page_Matematika
 ]
+onready var food_result_display = $FoodResultDisplay 
 
 func _ready():
 	FX.play_fast()
@@ -47,7 +49,8 @@ func _ready():
 	
 	# Pastikan popup tertutup saat mulai
 	day_popup.hide()
-	
+	dark_overlay.hide()
+	food_result_display.hide()
 	recipe_book_ui.hide()
 	buka_halaman(0)
 	update_recipe_book_visuals()
@@ -151,26 +154,57 @@ func _on_Spoon_pressed():
 	
 	# Aktifkan kembali tombol spoon
 	$Spoon.disabled = false
+	
 func cek_hasil_masakan():
-	# Pastikan keduanya adalah Array biasa sebelum di-sort
+	# Sort dulu biar pembandingannya akurat
 	var panci_sort = Array(bahan_di_panci) 
 	panci_sort.sort()
 	
 	var target_sort = Array(bahan_target_list)
 	target_sort.sort()
 	
-	print("Mencocokkan: ", panci_sort, " dengan ", target_sort) # Untuk debug
-	
+	print("Mencocokkan: ", panci_sort, " dengan ", target_sort)
+
+	# --- KONDISI 1: BENAR (Sesuai Pesanan) ---
 	if panci_sort == target_sort:
 		print("MASAKAN BERHASIL!")
+		var clean_name = resep_target_nama.to_lower().replace(" ", "_")
+		var path = "res://asset/food/" + clean_name + ".png"
+		
+		# Panggil fungsi animasi (false = tidak gelap)
+		yield(tampilkan_animasi_hasil(path, false), "completed")
+		
 		bahan_di_panci.clear()
-		# Tambahkan animasi sukses/makanan muncul di sini
-		yield(get_tree().create_timer(1.5), "timeout")
 		pindah_ke_customer_selanjutnya()
+		
+	# --- KONDISI LAIN (SALAH) ---
 	else:
 		print("MASAKAN SALAH!")
-		# Kosongkan panci agar pemain bisa coba lagi
-		bahan_di_panci.clear() # Player harus ulang masukin bahan
+		
+		# Cek: Sebenernya dia masak apa sih?
+		var masakan_terbuat = cari_masakan_dari_isi_panci()
+		
+		# --- KONDISI 2: SALAH ORDER (Tapi Resep Valid & Sudah Punya) ---
+		if masakan_terbuat != null and masakan_terbuat in GameData.owned_recipes:
+			print("Salah order! Player malah bikin: ", masakan_terbuat)
+			
+			var clean_name = masakan_terbuat.to_lower().replace(" ", "_")
+			var path = "res://asset/food/" + clean_name + ".png"
+			
+			# Tampilkan makanan tapi GELAP (true)
+			yield(tampilkan_animasi_hasil(path, true), "completed")
+			
+		# --- KONDISI 3: SAMPAH (Ngawur / Belum Punya Resep) ---
+		else:
+			print("Jadi sampah (Kombinasi ngawur atau resep belum di-unlock)")
+			var path_trash = "res://asset/food/trash.png" 
+			# Pastikan kamu punya file trash.png di folder asset/food/
+			
+			# Tampilkan sampah (false = warna normal sampah)
+			yield(tampilkan_animasi_hasil(path_trash, false), "completed")
+		
+		# Reset panci supaya player bisa coba lagi (Customer tidak ganti)
+		bahan_di_panci.clear()
 
 func pindah_ke_customer_selanjutnya():
 	bahan_di_panci.clear()
@@ -335,17 +369,25 @@ func _on_BtnBukaResep_pressed():
 	
 	if recipe_book_ui.visible:
 		# --- PROSES TUTUP ---
+		var tween = create_tween()
+		tween.tween_property(dark_overlay, "modulate:a", 0.0, 0.3)
+		yield(tween, "finished")
+		dark_overlay.hide()
 		# Langsung sembunyikan konten agar tidak "melayang" saat buku menutup
 		$Recipe/Pages.hide()
 		$Recipe/NextPage.hide()
 		$Recipe/PrevPage.hide()
 		
 		$Recipe/Book_animated.play("close")
-		yield(get_tree().create_timer(0.4), "timeout") # Sesuaikan dengan durasi animasi close
+		yield(get_tree().create_timer(0.7), "timeout") # Sesuaikan dengan durasi animasi close
 		
 		recipe_book_ui.hide()
 	else:
 		# --- PROSES BUKA ---
+		dark_overlay.show()
+		dark_overlay.modulate.a = 0
+		var tween=create_tween()
+		tween.tween_property(dark_overlay, "modulate:a", 0.55, 0.3)
 		update_recipe_book_visuals()
 		
 		# Pastikan konten dalam keadaan SEMBUNYI sebelum buku terbuka
@@ -362,5 +404,63 @@ func _on_BtnBukaResep_pressed():
 		# BARU TAMPILKAN konten dan navigasi
 		$Recipe/Pages.show()
 		buka_halaman(current_page_index) # Fungsi ini otomatis mengatur show/hide tombol Next/Prev
-	
+		
 	is_busy = false
+
+# Fungsi untuk mencari nama masakan berdasarkan isi panci
+func cari_masakan_dari_isi_panci():
+	var bahan_sekarang = Array(bahan_di_panci)
+	bahan_sekarang.sort()
+	
+	# Loop ke seluruh database resep di GameData
+	var db = GameData.recipe_database
+	for mapel in db.keys():
+		for diff in db[mapel].keys():
+			var data = db[mapel][diff]
+			
+			# Ambil bahan dari database dan rapikan
+			var bahan_resep = data["ing"].split(",")
+			var target_sort = []
+			for b in bahan_resep:
+				target_sort.append(b.strip_edges())
+			target_sort.sort()
+			
+			# Bandingkan
+			if bahan_sekarang == target_sort:
+				return data["name"] # Ketemu! Kembalikan nama masakannya
+	
+	return null # Tidak ketemu resep apapun (Masakan ngawur)
+func tampilkan_animasi_hasil(texture_path, is_darkened):
+	# 1. Load Gambar
+	if File.new().file_exists(texture_path):
+		food_result_display.texture = load(texture_path)
+	else:
+		print("Gambar tidak ditemukan: ", texture_path)
+		return
+
+	# 2. Atur Warna (Normal atau Gelap)
+	if is_darkened:
+		food_result_display.modulate = Color(0.4, 0.4, 0.4, 1) # Gelap
+	else:
+		food_result_display.modulate = Color(1, 1, 1, 1) # Normal
+
+	# 3. Reset Properti Animasi
+	food_result_display.show()
+	food_result_display.rect_pivot_offset = food_result_display.rect_size / 2
+	food_result_display.rect_scale = Vector2(0, 0)
+	
+	# 4. Mainkan Animasi Pop-Up
+	var tween = create_tween()
+	tween.tween_property(food_result_display, "rect_scale", Vector2(1.2, 1.2), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(food_result_display, "rect_scale", Vector2(1.0, 1.0), 0.1)
+	
+	# 5. Tahan (Freeze)
+	yield(get_tree().create_timer(2.0), "timeout")
+	
+	# 6. Sembunyikan (Pop-Out)
+	var close_tween = create_tween()
+	close_tween.tween_property(food_result_display, "rect_scale", Vector2(0, 0), 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	yield(close_tween, "finished")
+	
+	food_result_display.hide()
+	food_result_display.modulate = Color(1, 1, 1, 1) # Reset warna jaga-jaga

@@ -1,4 +1,4 @@
-[gd_scene load_steps=195 format=2]
+[gd_scene load_steps=203 format=2]
 
 [ext_resource path="res://asset/kitchen/bg_kitchen.png" type="Texture" id=1]
 [ext_resource path="res://asset/kitchen/string.png" type="Texture" id=2]
@@ -187,6 +187,11 @@
 [ext_resource path="res://asset/universal/back_click.png" type="Texture" id=185]
 [ext_resource path="res://asset/cook/finish/finish_cook23.png" type="Texture" id=186]
 [ext_resource path="res://asset/universal/back_hover.png" type="Texture" id=187]
+[ext_resource path="res://asset/kitchen/recipe button_hover.png" type="Texture" id=188]
+[ext_resource path="res://asset/kitchen/spoon_click.png" type="Texture" id=189]
+[ext_resource path="res://asset/kitchen/spoon_hover.png" type="Texture" id=190]
+[ext_resource path="res://asset/kitchen/recipe button_click.png" type="Texture" id=191]
+[ext_resource path="res://tema.tres" type="Theme" id=192]
 [ext_resource path="res://asset/OCRB.TTF" type="DynamicFontData" id=205]
 
 [sub_resource type="DynamicFont" id=5]
@@ -243,8 +248,21 @@ animations = [ {
 } ]
 
 [sub_resource type="DynamicFont" id=4]
-size = 24
 font_data = ExtResource( 205 )
+
+[sub_resource type="DynamicFontData" id=8]
+font_path = "res://asset/OCRB.TTF"
+
+[sub_resource type="DynamicFont" id=7]
+size = 13
+font_data = SubResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.25098, 0.235294, 0.235294, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="DynamicFont" id=6]
 size = 64
@@ -253,6 +271,7 @@ font_data = ExtResource( 205 )
 [node name="Kitchen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 192 )
 script = ExtResource( 15 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -321,10 +340,11 @@ align = 1
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Order/Control/OrderBubble"]
-margin_left = -34.0
-margin_top = -22.0
-margin_right = 93.0
-margin_bottom = 40.0
+margin_left = -18.6813
+margin_top = -35.9257
+margin_right = 80.3187
+margin_bottom = 63.0743
+expand = true
 
 [node name="SelfIngredient" type="Sprite" parent="."]
 position = Vector2( 1101, 421 )
@@ -338,6 +358,8 @@ margin_top = 396.0
 margin_right = 167.0
 margin_bottom = 558.0
 texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 189 )
+texture_hover = ExtResource( 190 )
 expand = true
 
 [node name="PotArea" type="Area2D" parent="."]
@@ -392,14 +414,20 @@ position = Vector2( 501, 598 )
 position = Vector2( 495, 629 )
 polygon = PoolVector2Array( -662, -756, -513, -736, -329, -748, -327, -703, -297, -694, -271, -642, -269, -510, -291, -463, -694, -461, -713, -504, -707, -642, -666, -700 )
 
-[node name="Recipe" type="Control" parent="."]
+[node name="DarkOverlay" type="ColorRect" parent="."]
 visible = false
+modulate = Color( 1, 1, 1, 0.54902 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Recipe" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="Book_animated" type="AnimatedSprite" parent="Recipe"]
-position = Vector2( 612.816, 275.16 )
+position = Vector2( 655.818, 275.113 )
 scale = Vector2( 1.09144, 1.09144 )
 frames = SubResource( 2 )
 animation = "open"
@@ -409,10 +437,10 @@ anchor_left = 1.203
 anchor_top = -2.064
 anchor_right = 6.003
 anchor_bottom = 0.657
-margin_left = -1631.3
-margin_top = 2181.15
-margin_right = -2383.3
-margin_bottom = 1668.79
+margin_left = -1588.3
+margin_top = 2181.1
+margin_right = -2340.3
+margin_bottom = 1668.74
 mouse_filter = 2
 
 [node name="Page_Biologi" type="Control" parent="Recipe/Pages"]
@@ -426,102 +454,117 @@ anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 76.0
-margin_right = 343.0
-margin_bottom = 76.0
+margin_left = -111.518
+margin_top = 17.002
+margin_right = -33.9979
+margin_bottom = 35.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Biologi/Slot_Easy"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Biologi"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 228.0
-margin_right = 343.0
-margin_bottom = 228.0
+margin_left = -111.518
+margin_top = 199.002
+margin_right = -33.9979
+margin_bottom = 217.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Biologi/Slot_Medium"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Biologi"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 381.0
-margin_right = 343.0
-margin_bottom = 381.0
+margin_left = 253.482
+margin_top = 104.002
+margin_right = 331.002
+margin_bottom = 122.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Biologi/Slot_Hard"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Page_Kimia" type="Control" parent="Recipe/Pages"]
 margin_left = 356.0
@@ -534,102 +577,117 @@ anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 76.0
-margin_right = 343.0
-margin_bottom = 76.0
+margin_left = -111.518
+margin_top = 17.002
+margin_right = -33.9979
+margin_bottom = 35.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Kimia/Slot_Easy"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Kimia"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 228.0
-margin_right = 343.0
-margin_bottom = 228.0
+margin_left = -111.518
+margin_top = 199.002
+margin_right = -33.9979
+margin_bottom = 217.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Kimia/Slot_Medium"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Kimia"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 381.0
-margin_right = 343.0
-margin_bottom = 381.0
+margin_left = 253.482
+margin_top = 104.002
+margin_right = 331.002
+margin_bottom = 122.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Kimia/Slot_Hard"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Page_Fisika" type="Control" parent="Recipe/Pages"]
 margin_left = 356.0
@@ -642,102 +700,117 @@ anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 76.0
-margin_right = 343.0
-margin_bottom = 76.0
+margin_left = -111.518
+margin_top = 17.002
+margin_right = -33.9979
+margin_bottom = 35.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Fisika/Slot_Easy"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Fisika"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 228.0
-margin_right = 343.0
-margin_bottom = 228.0
+margin_left = -111.518
+margin_top = 199.002
+margin_right = -33.9979
+margin_bottom = 217.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Fisika/Slot_Medium"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Fisika"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 381.0
-margin_right = 343.0
-margin_bottom = 381.0
+margin_left = 253.482
+margin_top = 104.002
+margin_right = 331.002
+margin_bottom = 122.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Fisika/Slot_Hard"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Page_Matematika" type="Control" parent="Recipe/Pages"]
 margin_left = 356.0
@@ -750,122 +823,137 @@ anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 76.0
-margin_right = 343.0
-margin_bottom = 76.0
+margin_left = -111.518
+margin_top = 17.002
+margin_right = -33.9979
+margin_bottom = 35.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Matematika/Slot_Easy"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Medium" type="VBoxContainer" parent="Recipe/Pages/Page_Matematika"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 228.0
-margin_right = 343.0
-margin_bottom = 228.0
+margin_left = -111.518
+margin_top = 199.002
+margin_right = -33.9979
+margin_bottom = 217.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Matematika/Slot_Medium"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
+margin_bottom = 100.0
 
 [node name="Slot_Hard" type="VBoxContainer" parent="Recipe/Pages/Page_Matematika"]
 anchor_left = 1.338
 anchor_top = -2.25
 anchor_right = 6.1
 anchor_bottom = 0.95
-margin_left = 265.48
-margin_top = 381.0
-margin_right = 343.0
-margin_bottom = 381.0
+margin_left = 253.482
+margin_top = 104.002
+margin_right = 331.002
+margin_bottom = 122.002
 
 [node name="FoodName" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
 margin_right = 268.0
-margin_bottom = 21.0
+margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 4 )
 autowrap = true
 
 [node name="FoodIcon" type="TextureRect" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
-margin_top = 25.0
+margin_top = 19.0
 margin_right = 268.0
-margin_bottom = 25.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 60, 60 )
+expand = true
+stretch_mode = 6
 
 [node name="IngLabel" type="Label" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
-margin_top = 29.0
+margin_top = 83.0
 margin_right = 268.0
-margin_bottom = 43.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 7 )
 autowrap = true
 
 [node name="IngContainer" type="HBoxContainer" parent="Recipe/Pages/Page_Matematika/Slot_Hard"]
-margin_top = 47.0
+margin_top = 100.0
 margin_right = 268.0
-margin_bottom = 47.0
-
-[node name="PrevPage" type="Button" parent="Recipe"]
-margin_left = 327.816
-margin_top = 493.16
-margin_right = 447.816
-margin_bottom = 538.16
-rect_min_size = Vector2( 120, 45 )
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "Previous"
+margin_bottom = 100.0
 
 [node name="NextPage" type="Button" parent="Recipe"]
-margin_left = 790.816
-margin_top = 494.16
-margin_right = 910.816
-margin_bottom = 539.16
+margin_left = 833.818
+margin_top = 521.113
+margin_right = 953.818
+margin_bottom = 566.113
 rect_min_size = Vector2( 120, 45 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Next"
+
+[node name="PrevPage" type="Button" parent="Recipe"]
+margin_left = 370.818
+margin_top = 520.113
+margin_right = 490.818
+margin_bottom = 565.113
+rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Previous"
 
 [node name="BtnBukaResep" type="TextureButton" parent="."]
 margin_left = 7.0
@@ -873,6 +961,8 @@ margin_top = 561.0
 margin_right = 172.0
 margin_bottom = 764.0
 texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 191 )
+texture_hover = ExtResource( 188 )
 expand = true
 
 [node name="DayFinishedPopup" type="Panel" parent="."]
@@ -882,6 +972,7 @@ margin_left = 436.0
 margin_top = 93.0
 margin_right = -395.0
 margin_bottom = -140.0
+custom_styles/panel = SubResource( 9 )
 
 [node name="ColorPicker" type="ColorRect" parent="DayFinishedPopup"]
 visible = false
@@ -934,7 +1025,16 @@ texture_pressed = ExtResource( 167 )
 texture_hover = ExtResource( 168 )
 expand = true
 
+[node name="FoodResultDisplay" type="TextureRect" parent="."]
+margin_left = 430.0
+margin_top = 336.0
+margin_right = 556.0
+margin_bottom = 462.0
+mouse_filter = 2
+expand = true
+stretch_mode = 6
+
 [connection signal="pressed" from="Spoon" to="." method="_on_Spoon_pressed"]
-[connection signal="pressed" from="Recipe/PrevPage" to="." method="_on_PrevPage_pressed"]
 [connection signal="pressed" from="Recipe/NextPage" to="." method="_on_NextPage_pressed"]
+[connection signal="pressed" from="Recipe/PrevPage" to="." method="_on_PrevPage_pressed"]
 [connection signal="pressed" from="BtnBukaResep" to="." method="_on_BtnBukaResep_pressed"]

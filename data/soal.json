@@ -291,10 +291,10 @@
         "12": {
             "question": "Urutan tingkatan organisasi kehidupan dari yang paling sederhana ke kompleks adalah …",
             "options": [
-                "A. Sel - organ - jaringan - sistem organ - individu",
-                "B. Sel - jaringan - organ - sistem organ - individu",
-                "C. Jaringan - sel - organ - individu - sistem organ",
-                "D. Organ - sel - jaringan - individu - sistem organ"
+                "A. Sel - organ - jaringan - sistem organ - \nindividu",
+                "B. Sel - jaringan - organ - sistem organ - \nindividu",
+                "C. Jaringan - sel - organ - individu - \nsistem organ",
+                "D. Organ - sel - jaringan - individu - \nsistem organ"
             ],
             "answer": "B",
             "Explanation": "Tingkatan organisasi kehidupan dimulai dari sel, kemudian jaringan, organ, sistem organ, dan akhirnya individu."
@@ -592,7 +592,7 @@
         "9": {
             "question": "Suatu segitiga memiliki alas 8 cm dan tinggi 6 cm. Luasnya adalah …",
             "options": [
-                "a. 24 cm²",
+                "a. 22 cm²",
                 "b. 24 cm²",
                 "c. 28 cm²",
                 "d. 30 cm²"
@@ -604,7 +604,7 @@
             "question": "Jika sebuah lingkaran memiliki jari-jari 7 cm, maka kelilingnya adalah (gunakan π = 22/7)",
             "options": [
                 "a. 44 cm",
-                "b. 44 cm",
+                "b. 46 cm",
                 "c. 49 cm",
                 "d. 50 cm"
             ],
@@ -623,7 +623,7 @@
             "Explanation": "0,25 × 0,4 = 0,10."
         },
         "12": {
-            "question": "Perbandingan umur Andi dan Budi adalah 3 : Jika jumlah umur mereka 32 tahun, maka umur Andi adalah …",
+            "question": "Perbandingan umur Andi dan Budi adalah 3 : 5. Jika jumlah umur mereka 32 tahun, maka umur Andi adalah …",
             "options": [
                 "a. 10 tahun",
                 "b. 12 tahun",

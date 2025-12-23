@@ -146,6 +146,14 @@ func _on_difficulty_selected(level):
 	
 	# UI Transisi
 	$BookUI.hide()
+	var hearts = $QuizUI/Hearts.get_children()
+	for h in hearts:
+		# Hentikan tween lama jika masih jalan (penting!)
+		if h.get_node_or_null("Tween"): 
+			h.get_node("Tween").stop_all() # Jika kamu pakai node Tween di dalam hati
+		
+		h.modulate = Color(1, 1, 1) # Kembalikan warna (tidak transparan)
+		h.rect_position.y = 0       # PAKSA TURUN KE POSISI AWAL
 	show_quiz_ui_animation()
 	$ProgressBar.show()
 	$ProgressCat1.show()
@@ -159,10 +167,6 @@ func _on_difficulty_selected(level):
 	$QuizUI.get_node("Answer Button").show()
 	$QuizUI/Hearts.show()
 	$QuizUI/ExplanationLabel.hide()
-	var hearts = $QuizUI/Hearts.get_children()
-	for h in hearts:
-		h.modulate = Color(1, 1, 1)
-		h.rect_position.y = 0
 	# Tampilkan soal pertama
 	var btns = $QuizUI.get_node("Answer Button")
 	for child in btns.get_children():
@@ -387,6 +391,16 @@ func update_result_popup_content():
 	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
 	
 	# 2. Update Teks Nama & Deskripsi
+	if result_popup.has_node("FoodIcon"):
+		# Ubah "Nasi Goreng" menjadi "nasi_goreng.png"
+		var nama_file = data["name"].to_lower().replace(" ", "_") + ".png"
+		var path = "res://asset/food/" + nama_file
+		
+		# Cek apakah file ada agar tidak error
+		if File.new().file_exists(path):
+			result_popup.get_node("FoodIcon").texture = load(path)
+		else:
+			print("Gambar makanan tidak ketemu: ", path)	
 	if result_popup.has_node("FoodNameLabel"):
 		result_popup.get_node("FoodNameLabel").text = data["name"]
 	if result_popup.has_node("IngredientsLabel"): # Pastikan label ini ada

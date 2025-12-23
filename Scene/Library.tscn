@@ -1,4 +1,4 @@
-[gd_scene load_steps=154 format=2]
+[gd_scene load_steps=155 format=2]
 
 [ext_resource path="res://Scene/quiz.gd" type="Script" id=1]
 [ext_resource path="res://asset/Perpus/library/fisika_hover.png" type="Texture" id=2]
@@ -201,6 +201,12 @@ animations = [ {
 "speed": 24.0
 } ]
 
+[sub_resource type="StyleBoxFlat" id=8]
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
 [sub_resource type="DynamicFont" id=7]
 size = 24
 font_data = ExtResource( 146 )
@@ -298,7 +304,6 @@ position = Vector2( 676, 357 )
 scale = Vector2( 1.12988, 1.12988 )
 frames = SubResource( 1 )
 animation = "open"
-frame = 5
 
 [node name="QuizManager" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -453,9 +458,9 @@ texture = ExtResource( 36 )
 expand = true
 
 [node name="Answer Button" type="VBoxContainer" parent="QuizUI"]
-margin_left = 742.0
+margin_left = 722.0
 margin_top = 272.0
-margin_right = 1000.0
+margin_right = 980.0
 margin_bottom = 522.0
 rect_min_size = Vector2( 0, 47 )
 custom_constants/separation = 44
@@ -465,6 +470,7 @@ margin_right = 258.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+clip_text = true
 
 [node name="B" type="Button" parent="QuizUI/Answer Button"]
 margin_top = 73.0
@@ -479,6 +485,7 @@ margin_right = 258.0
 margin_bottom = 176.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+clip_text = true
 
 [node name="D" type="Button" parent="QuizUI/Answer Button"]
 margin_top = 220.0
@@ -486,6 +493,7 @@ margin_right = 258.0
 margin_bottom = 250.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+clip_text = true
 
 [node name="NextButton" type="Button" parent="QuizUI"]
 visible = false
@@ -548,10 +556,12 @@ texture_hover = ExtResource( 141 )
 expand = true
 
 [node name="ResultPopup" type="Panel" parent="QuizUI"]
+visible = false
 margin_left = 270.0
 margin_top = 96.0
 margin_right = 1086.0
 margin_bottom = 569.0
+custom_styles/panel = SubResource( 8 )
 
 [node name="Panel" type="Sprite" parent="QuizUI/ResultPopup"]
 position = Vector2( 408.5, 238.5 )
@@ -563,11 +573,14 @@ margin_left = 53.0
 margin_right = 766.0
 margin_bottom = 99.0
 
-[node name="FoodTexture" type="TextureRect" parent="QuizUI/ResultPopup"]
-margin_left = 339.0
-margin_top = 134.0
-margin_right = 459.0
-margin_bottom = 254.0
+[node name="FoodIcon" type="TextureRect" parent="QuizUI/ResultPopup"]
+margin_left = 312.0
+margin_top = 81.0
+margin_right = 495.0
+margin_bottom = 264.0
+rect_min_size = Vector2( 120, 120 )
+expand = true
+stretch_mode = 6
 
 [node name="FoodNameLabel" type="Label" parent="QuizUI/ResultPopup"]
 margin_left = 127.0

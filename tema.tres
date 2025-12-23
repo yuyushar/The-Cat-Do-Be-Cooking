@@ -39,6 +39,8 @@ shadow_size = 8
 shadow_offset = Vector2( 4, 4 )
 
 [resource]
+Button/colors/font_color_disabled = Color( 1, 1, 1, 0.556863 )
+Button/styles/disabled = SubResource( 3 )
 Button/styles/hover = SubResource( 3 )
 Button/styles/normal = SubResource( 1 )
 Button/styles/pressed = SubResource( 3 )
