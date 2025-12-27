@@ -1,4 +1,4 @@
-[gd_scene load_steps=155 format=2]
+[gd_scene load_steps=157 format=2]
 
 [ext_resource path="res://Scene/quiz.gd" type="Script" id=1]
 [ext_resource path="res://asset/Perpus/library/fisika_hover.png" type="Texture" id=2]
@@ -144,8 +144,10 @@
 [ext_resource path="res://asset/title/Play.png" type="Texture" id=142]
 [ext_resource path="res://asset/title/play_hover.png" type="Texture" id=143]
 [ext_resource path="res://asset/title/play_click.png" type="Texture" id=144]
-[ext_resource path="res://asset/popup/bg.png" type="Texture" id=145]
+[ext_resource path="res://asset/Perpus/library/add library/bg_popup.png" type="Texture" id=145]
 [ext_resource path="res://asset/OCRB.TTF" type="DynamicFontData" id=146]
+[ext_resource path="res://asset/Perpus/library/add library/reward_title.png" type="Texture" id=147]
+[ext_resource path="res://asset/Perpus/library/add library/failed.png" type="Texture" id=148]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -202,10 +204,7 @@ animations = [ {
 } ]
 
 [sub_resource type="StyleBoxFlat" id=8]
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [sub_resource type="DynamicFont" id=7]
 size = 24
@@ -271,7 +270,7 @@ margin_bottom = 563.0
 texture_normal = ExtResource( 10 )
 texture_hover = ExtResource( 6 )
 
-[node name="BackToMenu" type="TextureButton" parent="."]
+[node name="BackToMap" type="TextureButton" parent="."]
 modulate = Color( 1, 1, 1, 0.831373 )
 margin_left = 7.0
 margin_top = 616.0
@@ -281,13 +280,6 @@ texture_normal = ExtResource( 31 )
 texture_pressed = ExtResource( 33 )
 texture_hover = ExtResource( 32 )
 expand = true
-
-[node name="HoverLabel" type="Label" parent="."]
-visible = false
-anchor_right = 0.029
-anchor_bottom = 0.018
-margin_right = 0.414997
-margin_bottom = 0.175999
 
 [node name="UIBlocker" type="ColorRect" parent="."]
 visible = false
@@ -309,6 +301,7 @@ animation = "open"
 script = ExtResource( 1 )
 
 [node name="BookUI" type="Control" parent="."]
+visible = false
 anchor_left = 0.285
 anchor_top = 0.355
 anchor_right = 0.564
@@ -362,6 +355,7 @@ texture_normal = ExtResource( 31 )
 texture_pressed = ExtResource( 33 )
 texture_hover = ExtResource( 32 )
 expand = true
+stretch_mode = 5
 
 [node name="ProgressBar" type="TextureProgress" parent="."]
 visible = false
@@ -372,22 +366,6 @@ margin_bottom = 114.0
 texture_under = ExtResource( 35 )
 texture_over = ExtResource( 35 )
 texture_progress = ExtResource( 37 )
-
-[node name="A2" type="Button" parent="ProgressBar"]
-visible = false
-margin_left = 653.0
-margin_top = 492.0
-margin_right = 743.0
-margin_bottom = 540.0
-text = "NEXT"
-
-[node name="A3" type="Button" parent="ProgressBar"]
-visible = false
-margin_left = 415.0
-margin_top = 489.0
-margin_right = 505.0
-margin_bottom = 537.0
-text = "BACK"
 
 [node name="ProgressCat1" type="AnimatedSprite" parent="."]
 visible = false
@@ -495,10 +473,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 clip_text = true
 
-[node name="NextButton" type="Button" parent="QuizUI"]
+[node name="Failed" type="Sprite" parent="QuizUI"]
 visible = false
-margin_right = 1326.0
-margin_bottom = 768.0
+position = Vector2( 642, 172 )
+scale = Vector2( 0.523013, 0.523013 )
+texture = ExtResource( 148 )
 
 [node name="bad_end" type="AnimatedSprite" parent="QuizUI"]
 visible = false
@@ -508,24 +487,34 @@ frames = SubResource( 3 )
 animation = "blink"
 
 [node name="ReturnButton" type="TextureButton" parent="QuizUI/bad_end"]
-margin_left = -545.0
-margin_top = 527.5
-margin_right = -198.0
-margin_bottom = 874.5
+anchor_left = -0.237
+anchor_top = 1.256
+anchor_right = 0.232
+anchor_bottom = 1.753
+margin_left = -369.857
+margin_top = -349.188
+margin_right = -369.448
+margin_bottom = -349.094
 texture_normal = ExtResource( 31 )
 texture_pressed = ExtResource( 33 )
 texture_hover = ExtResource( 32 )
 expand = true
+stretch_mode = 5
 
 [node name="RetryButton" type="TextureButton" parent="QuizUI/bad_end"]
-margin_left = 140.0
-margin_top = 525.0
-margin_right = 493.0
-margin_bottom = 878.0
+anchor_left = 0.689
+anchor_top = 1.252
+anchor_right = 1.167
+anchor_bottom = 1.758
+margin_left = -369.171
+margin_top = -348.896
+margin_right = -369.413
+margin_bottom = -349.084
 texture_normal = ExtResource( 140 )
 texture_pressed = ExtResource( 139 )
 texture_hover = ExtResource( 141 )
 expand = true
+stretch_mode = 5
 
 [node name="bad_end2" type="AnimatedSprite" parent="QuizUI"]
 visible = false
@@ -536,24 +525,34 @@ animation = "appear"
 frame = 47
 
 [node name="ReturnButton" type="TextureButton" parent="QuizUI/bad_end2"]
-margin_left = -560.0
-margin_top = 397.5
-margin_right = -213.0
-margin_bottom = 744.5
+anchor_left = -0.05
+anchor_top = 0.723
+anchor_right = 0.291
+anchor_bottom = 0.917
+margin_left = -509.05
+margin_top = -892.332
+margin_right = -509.529
+margin_bottom = -891.428
 texture_normal = ExtResource( 31 )
 texture_pressed = ExtResource( 33 )
 texture_hover = ExtResource( 32 )
 expand = true
+stretch_mode = 5
 
 [node name="RetryButton" type="TextureButton" parent="QuizUI/bad_end2"]
-margin_left = 125.0
-margin_top = 395.0
-margin_right = 478.0
-margin_bottom = 748.0
+anchor_left = 0.623
+anchor_top = 0.721
+anchor_right = 0.969
+anchor_bottom = 0.919
+margin_left = -509.837
+margin_top = -891.264
+margin_right = -509.411
+margin_bottom = -891.496
 texture_normal = ExtResource( 140 )
 texture_pressed = ExtResource( 139 )
 texture_hover = ExtResource( 141 )
 expand = true
+stretch_mode = 5
 
 [node name="ResultPopup" type="Panel" parent="QuizUI"]
 visible = false
@@ -564,68 +563,75 @@ margin_bottom = 569.0
 custom_styles/panel = SubResource( 8 )
 
 [node name="Panel" type="Sprite" parent="QuizUI/ResultPopup"]
-position = Vector2( 408.5, 238.5 )
-scale = Vector2( 0.785921, 1.01068 )
+position = Vector2( 411, 281 )
+scale = Vector2( 0.337373, 0.433856 )
 texture = ExtResource( 145 )
 
-[node name="TitleLabel" type="Label" parent="QuizUI/ResultPopup"]
-margin_left = 53.0
-margin_right = 766.0
-margin_bottom = 99.0
+[node name="TitleLabel" type="Sprite" parent="QuizUI/ResultPopup"]
+position = Vector2( 413, 14 )
+scale = Vector2( 0.511506, 0.511506 )
+texture = ExtResource( 147 )
 
 [node name="FoodIcon" type="TextureRect" parent="QuizUI/ResultPopup"]
-margin_left = 312.0
-margin_top = 81.0
-margin_right = 495.0
-margin_bottom = 264.0
+margin_left = 319.0
+margin_top = 98.0
+margin_right = 502.0
+margin_bottom = 281.0
 rect_min_size = Vector2( 120, 120 )
 expand = true
 stretch_mode = 6
 
 [node name="FoodNameLabel" type="Label" parent="QuizUI/ResultPopup"]
 margin_left = 127.0
-margin_top = 264.0
+margin_top = 278.0
 margin_right = 685.0
-margin_bottom = 288.0
+margin_bottom = 302.0
 custom_fonts/font = SubResource( 7 )
-align = 1
-valign = 1
-
-[node name="IngredientsLabel" type="Label" parent="QuizUI/ResultPopup"]
-margin_left = 144.0
-margin_top = 380.0
-margin_right = 670.0
-margin_bottom = 472.0
 align = 1
 valign = 1
 
 [node name="IngredientsContainer" type="HBoxContainer" parent="QuizUI/ResultPopup"]
 margin_left = 143.0
-margin_top = 286.0
+margin_top = 304.0
 margin_right = 671.0
-margin_bottom = 393.0
+margin_bottom = 411.0
 grow_horizontal = 2
 alignment = 1
 
+[node name="IngredientsLabel" type="Label" parent="QuizUI/ResultPopup"]
+margin_left = 144.0
+margin_top = 388.0
+margin_right = 670.0
+margin_bottom = 480.0
+align = 1
+valign = 1
+
 [node name="KitchenButton" type="TextureButton" parent="QuizUI/ResultPopup"]
-margin_left = 666.0
-margin_top = 322.0
-margin_right = 813.0
-margin_bottom = 469.0
+margin_left = 557.0
+margin_top = 451.0
+margin_right = 647.0
+margin_bottom = 541.0
 texture_normal = ExtResource( 142 )
 texture_pressed = ExtResource( 144 )
 texture_hover = ExtResource( 143 )
 expand = true
 
 [node name="BackLibraryButton" type="TextureButton" parent="QuizUI/ResultPopup"]
-margin_left = -2.0
-margin_top = 322.0
-margin_right = 146.0
-margin_bottom = 470.0
+margin_left = 173.0
+margin_top = 451.0
+margin_right = 263.0
+margin_bottom = 541.0
 texture_normal = ExtResource( 31 )
 texture_pressed = ExtResource( 33 )
 texture_hover = ExtResource( 32 )
 expand = true
+
+[node name="HoverLabel" type="Label" parent="."]
+visible = false
+anchor_right = 0.029
+anchor_bottom = 0.018
+margin_right = 0.414997
+margin_bottom = 0.176001
 
 [node name="Tween" type="Tween" parent="."]
 

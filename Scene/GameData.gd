@@ -11,7 +11,7 @@ var difficulty_progress = {
 
 # Simpan resep yang sudah didapat (Array string)
 var owned_recipes = []
-
+var has_played_unlock_anim = false
 func unlock_next_difficulty(mapel, current_diff_string):
 	var current_val = 0
 	if current_diff_string == "Easy": current_val = 0

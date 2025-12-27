@@ -1,4 +1,4 @@
-[gd_scene load_steps=203 format=2]
+[gd_scene load_steps=204 format=2]
 
 [ext_resource path="res://asset/kitchen/bg_kitchen.png" type="Texture" id=1]
 [ext_resource path="res://asset/kitchen/string.png" type="Texture" id=2]
@@ -192,6 +192,8 @@
 [ext_resource path="res://asset/kitchen/spoon_hover.png" type="Texture" id=190]
 [ext_resource path="res://asset/kitchen/recipe button_click.png" type="Texture" id=191]
 [ext_resource path="res://tema.tres" type="Theme" id=192]
+[ext_resource path="res://asset/Perpus/library/add library/bg_popup.png" type="Texture" id=193]
+[ext_resource path="res://asset/kitchen/day_clear.png" type="Texture" id=194]
 [ext_resource path="res://asset/OCRB.TTF" type="DynamicFontData" id=205]
 
 [sub_resource type="DynamicFont" id=5]
@@ -263,10 +265,6 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-
-[sub_resource type="DynamicFont" id=6]
-size = 64
-font_data = ExtResource( 205 )
 
 [node name="Kitchen" type="Control"]
 anchor_right = 1.0
@@ -422,6 +420,7 @@ anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Recipe" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -966,13 +965,19 @@ texture_hover = ExtResource( 188 )
 expand = true
 
 [node name="DayFinishedPopup" type="Panel" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 436.0
+margin_left = 381.0
 margin_top = 93.0
-margin_right = -395.0
+margin_right = -378.0
 margin_bottom = -140.0
 custom_styles/panel = SubResource( 9 )
+
+[node name="Sprite" type="Sprite" parent="DayFinishedPopup"]
+position = Vector2( 303.359, 267.5 )
+scale = Vector2( 0.43125, 0.439844 )
+texture = ExtResource( 193 )
 
 [node name="ColorPicker" type="ColorRect" parent="DayFinishedPopup"]
 visible = false
@@ -984,42 +989,35 @@ margin_right = 408.0
 margin_bottom = 190.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="Label" type="Label" parent="DayFinishedPopup"]
-margin_left = 3.0
-margin_top = 118.0
-margin_right = 540.0
-margin_bottom = 306.0
-custom_colors/font_color = Color( 1, 0.952941, 0.952941, 1 )
-custom_fonts/font = SubResource( 6 )
-text = "Hari Telah Selesai"
-align = 1
-valign = 1
-autowrap = true
+[node name="Label" type="Sprite" parent="DayFinishedPopup"]
+position = Vector2( 312, 165 )
+scale = Vector2( 0.6841, 0.6841 )
+texture = ExtResource( 194 )
 
 [node name="VBoxContainer" type="HBoxContainer" parent="DayFinishedPopup"]
-margin_left = 143.0
-margin_top = 439.0
-margin_right = 386.0
-margin_bottom = 523.0
-rect_min_size = Vector2( 64, 64 )
+margin_left = 87.0
+margin_top = 389.0
+margin_right = 507.0
+margin_bottom = 524.0
+rect_min_size = Vector2( 135, 135 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
-custom_constants/separation = 75
+custom_constants/separation = 150
 
 [node name="MapButton" type="TextureButton" parent="DayFinishedPopup/VBoxContainer"]
-margin_right = 84.0
-margin_bottom = 84.0
-rect_min_size = Vector2( 84, 84 )
+margin_right = 135.0
+margin_bottom = 135.0
+rect_min_size = Vector2( 135, 135 )
 texture_normal = ExtResource( 184 )
 texture_pressed = ExtResource( 185 )
 texture_hover = ExtResource( 187 )
 expand = true
 
 [node name="ContinueButton" type="TextureButton" parent="DayFinishedPopup/VBoxContainer"]
-margin_left = 159.0
-margin_right = 243.0
-margin_bottom = 84.0
-rect_min_size = Vector2( 84, 84 )
+margin_left = 285.0
+margin_right = 420.0
+margin_bottom = 135.0
+rect_min_size = Vector2( 135, 135 )
 texture_normal = ExtResource( 161 )
 texture_pressed = ExtResource( 167 )
 texture_hover = ExtResource( 168 )
@@ -1033,6 +1031,12 @@ margin_bottom = 462.0
 mouse_filter = 2
 expand = true
 stretch_mode = 6
+
+[node name="HoverLabel" type="Label" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+align = 1
 
 [connection signal="pressed" from="Spoon" to="." method="_on_Spoon_pressed"]
 [connection signal="pressed" from="Recipe/NextPage" to="." method="_on_NextPage_pressed"]

@@ -2,15 +2,14 @@ extends Control
 
 onready var hover_label = $HoverLabel
 onready var ui_blocker = $UIBlocker
-# Referensi Node baru sesuai gambar
 onready var result_popup = $QuizUI/ResultPopup
+onready var failed_sprite = $QuizUI/Failed
 onready var bad_end_node = $QuizUI/bad_end
 onready var bad_end2_node = $QuizUI/bad_end2
-# Variabel Game
 var health = 3
 var total_questions = 0
 var current_question_index = 0
-var current_questions_list = [] # List soal yang sedang dimainkan
+var current_questions_list = []
 var current_mapel = ""
 var current_difficulty = ""
 var origin_bar_y = 0
@@ -19,43 +18,41 @@ var origin_question_x = 0
 var origin_answers_x = 0
 var origin_explanation_y = 0
 func _ready():
-	# Setup Awal
-	$BackToMenu.show()
+	$BackToMap.show()
 	$BookUI.hide()
 	$QuizUI.hide()
 	result_popup.hide()
+	if failed_sprite: failed_sprite.hide()
 	bad_end_node.hide()
-	
-	# Koneksi Tombol Menu
-	$BackToMenu.connect("pressed", self, "Menupressed")
+	$BackToMap.connect("pressed", self, "Menupressed")
 	$BookUI/BackButton.connect("pressed", self, "_on_book_back_pressed")
-
-	# Koneksi Tombol Difficulty
 	$BookUI/DifficultyMenu/EasyButton.connect("pressed", self, "_on_difficulty_selected", ["Easy"])
 	$BookUI/DifficultyMenu/MediumButton.connect("pressed", self, "_on_difficulty_selected", ["Medium"])
 	$BookUI/DifficultyMenu/HardButton.connect("pressed", self, "_on_difficulty_selected", ["Hard"])
-
-	# Koneksi Tombol Jawaban (A, B, C, D)
 	var answer_buttons = $QuizUI.get_node("Answer Button")
 	answer_buttons.get_node("A").connect("pressed", self, "_on_answer_pressed", ["A"])
 	answer_buttons.get_node("B").connect("pressed", self, "_on_answer_pressed", ["B"])
 	answer_buttons.get_node("C").connect("pressed", self, "_on_answer_pressed", ["C"])
 	answer_buttons.get_node("D").connect("pressed", self, "_on_answer_pressed", ["D"])
+	bad_end_node.get_node("ReturnButton").connect("pressed", self, "_on_book_back_pressed")
+	bad_end_node.get_node("RetryButton").connect("pressed", self, "_retry_quiz")
 
-	# Koneksi Tombol Bad End (Retry & Return)
-	bad_end_node.get_node("ReturnButton").connect("pressed", self, "_on_book_back_pressed") # Balik ke rak
-	bad_end_node.get_node("RetryButton").connect("pressed", self, "_retry_quiz") # Ulang quiz
-
-	# Koneksi Tombol Result Popup (Menang)
-	# ASUMSI: Di dalam ResultPopup ada tombol 'KitchenButton' dan 'BackLibraryButton'
-	# Ganti nama node di bawah sesuai isi scene ResultPopup kamu
 	if result_popup.has_node("KitchenButton"):
-		result_popup.get_node("KitchenButton").connect("pressed", self, "_goto_kitchen")
+		var btn_kitchen = result_popup.get_node("KitchenButton")
+		btn_kitchen.connect("pressed", self, "_goto_kitchen")
+		btn_kitchen.connect("mouse_entered", self, "_on_result_btn_hover", [btn_kitchen, "Kedapur"])
+		btn_kitchen.connect("mouse_exited", self, "_on_result_btn_exit")
 	if result_popup.has_node("BackLibraryButton"):
-		result_popup.get_node("BackLibraryButton").connect("pressed", self, "_on_book_back_pressed")
-
-	# Setup Rak Buku
+		var btn_back = result_popup.get_node("BackLibraryButton")
+		btn_back.connect("pressed", self, "_on_book_back_pressed")
+		btn_back.connect("mouse_entered", self, "_on_result_btn_hover", [btn_back, "Kembali"])
+		btn_back.connect("mouse_exited", self, "_on_result_btn_exit")
+		
 	hover_label.hide()
+	_add_hover($BackToMap, "Kembali ke Menu Utama")
+	_add_hover($BookUI/BackButton, "Tutup Buku")
+	_add_hover(bad_end_node.get_node("ReturnButton"), "Menyerah / Kembali")
+	_add_hover(bad_end_node.get_node("RetryButton"), "Coba Lagi")
 	var mapel = ["Biologi", "Fisika", "Kimia", "Matematika"]
 	for i in range($ShelfButton.get_child_count()):
 		var shelf = $ShelfButton.get_child(i)
@@ -68,15 +65,16 @@ func _ready():
 	origin_answers_x = $QuizUI.get_node("Answer Button").rect_position.x
 	origin_explanation_y = $QuizUI/ExplanationLabel.rect_position.y
 	$QuizManager.load_json()
-
-# --- LOGIKA PILIH RAK & BUKA BUKU ---
+func _add_hover(btn_node, text):
+	if not btn_node.is_connected("mouse_entered", self, "_on_result_btn_hover"):
+		btn_node.connect("mouse_entered", self, "_on_result_btn_hover", [btn_node, text])
+		btn_node.connect("mouse_exited", self, "_on_result_btn_exit")
 func _on_shelf_pressed(shelf, mapel):
-	current_mapel = mapel # Simpan mapel yang dipilih
-	$BackToMenu.hide()
+	current_mapel = mapel
+	$BackToMap.hide()
 	ui_blocker.show()
-	$BackToMenu.disabled = true
+	$BackToMap.disabled = true
 	
-	# Animasi Buku
 	$Book_animated.position.y = 1000
 	create_tween().tween_property($Book_animated, "position:y", 357, 0.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_BACK)
 	$ShelfButton.modulate.a = 0.3
@@ -93,19 +91,15 @@ func show_difficulty_menu():
 	var menu = $BookUI/DifficultyMenu
 	menu.show()
 	
-	# Cek Lock/Unlock status dari GameData
 	var unlocked_level = GameData.difficulty_progress[current_mapel]
 	
-	# 0=Easy, 1=Medium, 2=Hard
 	menu.get_node("EasyButton").disabled = false
 	menu.get_node("MediumButton").disabled = (unlocked_level < 1)
 	menu.get_node("HardButton").disabled = (unlocked_level < 2)
 	
-	# Visual feedback kalau disable (opsional, misal jadi gelap)
 	menu.get_node("MediumButton").modulate = Color(1,1,1) if unlocked_level >= 1 else Color(0.5,0.5,0.5)
 	menu.get_node("HardButton").modulate = Color(1,1,1) if unlocked_level >= 2 else Color(0.5,0.5,0.5)
 
-	# Animasi tombol muncul
 	var buttons = [menu.get_node("EasyButton"), menu.get_node("MediumButton"), menu.get_node("HardButton")]
 	for i in range(buttons.size()):
 		var btn = buttons[i]
@@ -115,28 +109,23 @@ func show_difficulty_menu():
 		tween.tween_property(btn, "modulate:a", 1, 0.4).set_delay(i * 0.1)
 		tween.tween_property(btn, "rect_position:y", btn.rect_position.y - 40, 0.4).set_delay(i * 0.1)
 
-# --- LOGIKA MULAI QUIZ ---
 func _on_difficulty_selected(level):
 	current_difficulty = level
 	
-	# Ambil soal dari QuizManager
 	current_questions_list = $QuizManager.get_questions(current_mapel, level)
 
 	if current_questions_list.size() == 0:
 		print("Soal kosong!")
 		return
 
-	# Set jumlah soal berdasarkan level
 	match level:
 		"Easy": total_questions = 3
 		"Medium": total_questions = 5
 		"Hard": total_questions = 7
 	
-	# Potong list soal sesuai jumlah yang dibutuhkan
 	if current_questions_list.size() > total_questions:
 		current_questions_list.resize(total_questions)
 
-	# Reset Stat Quiz
 	$ProgressBar.max_value = total_questions
 	$ProgressBar.value = 0
 	
@@ -144,162 +133,135 @@ func _on_difficulty_selected(level):
 	current_question_index = 0
 	health = 3
 	
-	# UI Transisi
 	$BookUI.hide()
 	var hearts = $QuizUI/Hearts.get_children()
 	for h in hearts:
-		# Hentikan tween lama jika masih jalan (penting!)
 		if h.get_node_or_null("Tween"): 
-			h.get_node("Tween").stop_all() # Jika kamu pakai node Tween di dalam hati
+			h.get_node("Tween").stop_all() 
 		
-		h.modulate = Color(1, 1, 1) # Kembalikan warna (tidak transparan)
-		h.rect_position.y = 0       # PAKSA TURUN KE POSISI AWAL
+		h.modulate = Color(1, 1, 1)
+		h.rect_position.y = 0
 	show_quiz_ui_animation()
 	$ProgressBar.show()
 	$ProgressCat1.show()
 	$ProgressCat1.play("default")
 	$ProgressCat1.speed_scale = 1.0
 	$QuizUI.show()
-	$QuizUI/Light.hide()        # Pastikan cahaya mati
-	result_popup.hide()         # Pastikan popup menang mati
+	$QuizUI/Light.hide()
+	result_popup.hide()
 	bad_end_node.hide()
 	$QuizUI/QuestionLabel.show()         
 	$QuizUI.get_node("Answer Button").show()
 	$QuizUI/Hearts.show()
 	$QuizUI/ExplanationLabel.hide()
-	# Tampilkan soal pertama
 	var btns = $QuizUI.get_node("Answer Button")
 	for child in btns.get_children():
-		child.disabled = false  # <--- INI KUNCINYA
-		child.pressed = false   # Reset status tertekan (jaga-jaga)
+		child.disabled = false  
+		child.pressed = false
 	load_current_question_to_ui()
 	$QuizUI/QuestionLabel.modulate.a = 0
 	$QuizUI.get_node("Answer Button").modulate.a = 0
 	
-	# Panggil Animasi Masuk
 	animate_ui_in()
 
 func load_current_question_to_ui():
 	var data = current_questions_list[current_question_index]
 	
-	# Set Text Soal
 	$QuizUI/QuestionLabel.text = data["question"]
 	
-	# Set Text Jawaban
 	var btn_node = $QuizUI.get_node("Answer Button")
-	var options = data["options"] # Ini adalah Array ["A. ...", "B. ..."]
-
-	# Kita langsung ambil berdasarkan urutan (Index 0 = A, 1 = B, dst)
-	# Menggunakan str() untuk jaga-jaga kalau ada opsi yang isinya cuma angka
+	var options = data["options"]
 	btn_node.get_node("A").text = str(options[0])
 	btn_node.get_node("B").text = str(options[1])
 	btn_node.get_node("C").text = str(options[2])
 	btn_node.get_node("D").text = str(options[3])
 func _on_answer_pressed(pilihan_user):
 	var data = current_questions_list[current_question_index]
-	var jawaban_benar = str(data["answer"]) # Ambil kunci jawaban dari JSON
+	var jawaban_benar = str(data["answer"])
 	var btns = $QuizUI.get_node("Answer Button")
 	for child in btns.get_children():
 		child.disabled = true
 		
 	if pilihan_user.to_upper() == jawaban_benar.to_upper():
 		print("Benar!")
-		# Tampilkan Penjelasan Dulu
 		show_explanation_sequence(data)
 	else:
 		print("Salah!")
 		wrong_answer()
-		# Nyalakan tombol lagi kalau salah (biar bisa jawab lagi/tunggu bad end)
 		if health > 0:
 			for child in btns.get_children():
 				child.disabled = false
 func show_explanation_sequence(data):
-	# 1. Sembunyikan tombol jawaban sementara (opsional, atau biarkan disabled)
 	var btns = $QuizUI.get_node("Answer Button")
-	
-	# 2. Set Teks Penjelasan
 	var expl_text = "Penjelasan: " + str(data.get("Explanation", "Tidak ada penjelasan."))
 	$QuizUI/ExplanationLabel.text = expl_text
 	$QuizUI/ExplanationLabel.show()
 	$QuizUI/ExplanationLabel.modulate.a = 0
-	
-	# 3. Animasi Muncul Penjelasan
 	var tween = create_tween()
 	tween.tween_property($QuizUI/ExplanationLabel, "modulate:a", 1, 0.5)
-	
-	# 4. Tunggu 3 Detik
 	yield(get_tree().create_timer(3.0), "timeout")
-	
-	# 5. Lanjut ke Soal Berikutnya (Logika Next Pindah Kesini)
 	proceed_to_next_step()
 func proceed_to_next_step():
-	# 1. Animasi UI KELUAR (Geser ke kiri / Hilang)
 	animate_ui_out()
-	
-	# Tunggu animasi keluar selesai (0.5 detik)
 	yield(get_tree().create_timer(0.5), "timeout")
-	
-	# Sembunyikan Penjelasan
 	$QuizUI/ExplanationLabel.hide()
-
-	# 2. Mainkan Animasi Buku Balik Halaman
 	$Book_animated.frame = 0
 	$Book_animated.play("next")
-	
-	# Tunggu animasi buku selesai (sesuaikan durasi animasimu)
 	yield($Book_animated, "animation_finished")
-
-	# 3. Update Data (Index tambah)
 	current_question_index += 1
 	$ProgressBar.value = current_question_index
 	update_cat_position()
-
-	# Cek apakah sudah selesai atau masih ada soal
 	if current_question_index < total_questions:
-		# Load Soal Baru ke Text (posisi masih tersembunyi/di luar layar)
 		load_current_question_to_ui()
-		
-		# Nyalakan kembali tombol jawaban
 		var btns = $QuizUI.get_node("Answer Button")
 		for child in btns.get_children():
 			child.disabled = false
 		animate_ui_in()
 		
 	else:
-		# Menang
 		quiz_finished_win()
+func _on_result_btn_hover(btn_node, text):
+	hover_label.text = text
+	hover_label.rect_size = Vector2(0, 0) 
+	hover_label.show()
+	yield(get_tree(), "idle_frame") 
+	if is_instance_valid(btn_node):
+		var btn_global_pos = btn_node.rect_global_position
+		var total_scale = btn_node.get_global_transform().get_scale()
+		var true_width = btn_node.rect_size.x * total_scale.x
+		var label_size = hover_label.rect_size
+		var pos_x = btn_global_pos.x + (true_width / 2) - (label_size.x / 2)
+		var pos_y = btn_global_pos.y - label_size.y - 15
+		hover_label.rect_global_position = Vector2(pos_x, pos_y)
+		hover_label.raise()
 
+func _on_result_btn_exit():
+	hover_label.hide()
+	
 func next_question():
-	# Animasi Next Page (Buku)
 	$Book_animated.frame = 0
 	$Book_animated.play("next")
 
-	# Update Progress Bar & Kucing
 	current_question_index += 1
 	$ProgressBar.value = current_question_index
 	update_cat_position()
 
 	if current_question_index < total_questions:
-		# Masih ada soal, load soal berikutnya
 		load_current_question_to_ui()
 	else:
-		# SUDAH SELESAI SEMUA SOAL (MENANG)
 		quiz_finished_win()
 func animate_ui_in():
 	var q_label = $QuizUI/QuestionLabel
 	var btn_group = $QuizUI.get_node("Answer Button")
 	
-	# Set posisi awal (sedikit di kanan biar seolah masuk dari kanan)
 	q_label.rect_position.x = origin_question_x + 50
 	btn_group.rect_position.x = origin_answers_x + 50
 	
-	# Set transparan dulu
 	q_label.modulate.a = 0
 	btn_group.modulate.a = 0
 	
-	# Tween Masuk (Geser ke posisi asli & Muncul)
 	var tween = create_tween()
-	tween.set_parallel(true) # Jalankan barengan
+	tween.set_parallel(true)
 	
 	tween.tween_property(q_label, "rect_position:x", origin_question_x, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(q_label, "modulate:a", 1, 0.5)
@@ -311,20 +273,12 @@ func animate_ui_out():
 	var q_label = $QuizUI/QuestionLabel
 	var btn_group = $QuizUI.get_node("Answer Button")
 	var expl_label = $QuizUI/ExplanationLabel
-	
-	# Tween Keluar (Geser ke kiri & Hilang)
 	var tween = create_tween()
 	tween.set_parallel(true)
-	
-	# Soal geser ke kiri
 	tween.tween_property(q_label, "rect_position:x", origin_question_x - 50, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_property(q_label, "modulate:a", 0, 0.4)
-	
-	# Tombol geser ke kiri
 	tween.tween_property(btn_group, "rect_position:x", origin_answers_x - 50, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_property(btn_group, "modulate:a", 0, 0.4)
-	
-	# Penjelasan hilang (fade out)
 	tween.tween_property(expl_label, "modulate:a", 0, 0.4)
 
 func wrong_answer():
@@ -335,7 +289,6 @@ func wrong_answer():
 	if health <= 0:
 		quiz_finished_lose()
 
-# --- KONDISI MENANG (DAPAT RESEP) ---
 func quiz_finished_win():
 	$ProgressCat1.speed_scale = 2.0
 	yield(get_tree().create_timer(1.0), "timeout")
@@ -346,7 +299,6 @@ func quiz_finished_win():
 	$QuizUI/QuestionLabel.hide()
 	$QuizUI.get_node("Answer Button").hide()
 
-	# Animasi Cahaya
 	var light = $QuizUI/Light
 	ui_blocker.show()
 	light.show()
@@ -366,84 +318,53 @@ func quiz_finished_win():
 	yield(tween_in, "finished")
 	yield(get_tree().create_timer(0.5), "timeout")
 	
-	# Simpan Progress & Resep
 	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
 	var resep_baru = data["name"]
 	if not resep_baru in GameData.owned_recipes:
 		GameData.owned_recipes.append(resep_baru)
 		print("BERHASIL: Resep " + resep_baru + " ditambahkan ke GameData!")
 	GameData.unlock_next_difficulty(current_mapel, current_difficulty)	
-	# Disini kamu bisa random resep atau set resep fix per level
-	# GameData.owned_recipes.append("Resep Baru") 
-
-	# Tampilkan Popup Resep
-
 
 	$ShelfButton.modulate.a = 0.3
 	$Background.modulate.a = 0.3
-	$BackToMenu.hide()
-	$BackToMenu.disabled = false
+	$BackToMap.hide()
+	$BackToMap.disabled = false
 	$ProgressBar.value=0
 	$ProgressCat1.position.x = 138
-# --- KONDISI KALAH (BAD END) ---
+	
 func update_result_popup_content():
-	# Ambil data dari GameData berdasarkan Mapel & Difficulty saat ini
 	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
 	
-	# 2. Update Teks Nama & Deskripsi
 	if result_popup.has_node("FoodIcon"):
-		# Ubah "Nasi Goreng" menjadi "nasi_goreng.png"
 		var nama_file = data["name"].to_lower().replace(" ", "_") + ".png"
 		var path = "res://asset/food/" + nama_file
-		
-		# Cek apakah file ada agar tidak error
 		if File.new().file_exists(path):
 			result_popup.get_node("FoodIcon").texture = load(path)
 		else:
 			print("Gambar makanan tidak ketemu: ", path)	
 	if result_popup.has_node("FoodNameLabel"):
 		result_popup.get_node("FoodNameLabel").text = data["name"]
-	if result_popup.has_node("IngredientsLabel"): # Pastikan label ini ada
-		# Mengambil data mentah: "Daging, Santan, Telur"
+	if result_popup.has_node("IngredientsLabel"): 
 		var raw_text = data["ing"]
-		# Mengubah koma menjadi " + " -> "Daging + Santan + Telur"
 		var formatted_text = raw_text.replace(",", " +")
 		result_popup.get_node("IngredientsLabel").text = formatted_text
-	# 3. LOGIC GAMBAR BAHAN
 	if result_popup.has_node("IngredientsContainer"):
 		var container = result_popup.get_node("IngredientsContainer")
 		
-		# A. Bersihkan gambar lama dulu (biar ga numpuk)
 		for child in container.get_children():
 			child.queue_free()
-		
-		# B. Ambil string bahan dan pisahkan berdasarkan koma
-		# Contoh: "Buah, Madu, Air" -> ["Buah", " Madu", " Air"]
-		var list_bahan = data["ing"].split(",") 
-		
-		# C. Loop setiap bahan
+		var list_bahan = data["ing"].split(",")
 		for nama_bahan_mentah in list_bahan:
-			# Bersihkan spasi (misal " Madu" jadi "Madu")
 			var nama_bersih = nama_bahan_mentah.strip_edges()
-			
-			# Path Gambar (PENTING: Pastikan nama file sama persis besar/kecil hurufnya!)
-			# Asumsi ekstensi file adalah .png
 			var nama_file = str(nama_bersih).to_lower()
 			var path = "res://asset/ingridients/" + nama_file + ".png"
-			
-			# Cek apakah file ada?
 			var file_check = File.new()
 			if file_check.file_exists(path):
-				# Buat TextureRect baru
 				var texture_rect = TextureRect.new()
 				texture_rect.texture = load(path)
 				texture_rect.expand = true
 				texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				
-				# Atur ukuran gambar bahan (misal 64x64 pixel)
 				texture_rect.rect_min_size = Vector2(120,120)
-				
-				# Masukkan ke Container
 				container.add_child(texture_rect)
 			else:
 				print("Gambar tidak ditemukan untuk bahan: ", path)
@@ -455,10 +376,12 @@ func quiz_finished_lose():
 	$ProgressCat1.hide()
 	$QuizUI/QuestionLabel.hide()
 	$QuizUI.get_node("Answer Button").hide()
+	if failed_sprite: failed_sprite.hide()
 	
-	# Mainkan animasi Bad End
 	bad_end_node.hide()
 	bad_end2_node.show()
+	if failed_sprite: 
+		failed_sprite.show()
 	bad_end2_node.frame = 0
 	bad_end_node.get_node("ReturnButton").hide()
 	bad_end_node.get_node("RetryButton").hide()
@@ -466,41 +389,35 @@ func quiz_finished_lose():
 	yield($QuizUI/bad_end2, "animation_finished")
 	bad_end2_node.hide()
 	bad_end_node.show()
-	
 	bad_end_node.get_node("ReturnButton").show()
 	bad_end_node.get_node("RetryButton").show()
 	_start_lose_loop()
 func _start_lose_loop():
 	while bad_end_node.visible:
-		# Mainkan Idle
 		bad_end_node.frame = 0
 		bad_end_node.play("idle")
 		yield(bad_end_node, "animation_finished")
 		
-		# Jika player sudah klik retry/keluar, hentikan loop
 		if not bad_end_node.visible: 
 			break
-		
-		# Mainkan Blink
 		bad_end_node.play("blink")
 		yield(bad_end_node, "animation_finished")
-# --- TOMBOL INTERAKSI ---
+		
 func _retry_quiz():
-	# Reset tampilan bad end
+	if failed_sprite: failed_sprite.hide() 
 	bad_end_node.hide()
 	bad_end_node.stop()
 	$Book_animated.show()
 	$Book_animated.frame=0
 	$Book_animated.play("open")
 	yield($Book_animated, "animation_finished")
-	# Ulangi fungsi _on_difficulty_selected dengan level yang sama
 	_on_difficulty_selected(current_difficulty)
 
 func _goto_kitchen():
-	get_tree().change_scene("res://Scene/Kitchen.tscn") # Ganti path sesuai scene kitchen kamu
-
+	get_tree().change_scene("res://Scene/Kitchen.tscn")
+	
 func _on_book_back_pressed():
-	# Reset Total UI untuk kembali ke Library Menu
+	hover_label.hide()
 	$BookUI.hide()
 	$QuizUI.hide()
 	$ProgressBar.hide()
@@ -508,23 +425,27 @@ func _on_book_back_pressed():
 	result_popup.hide()
 	bad_end_node.hide()
 	hover_label.hide()
-	
-	$QuizUI/QuestionLabel.show() # Reset visibility untuk next play
+	if failed_sprite: failed_sprite.hide() 
+	$QuizUI/QuestionLabel.show()
 	$QuizUI.get_node("Answer Button").show()
 
+	if $Book_animated.visible:
+		if $Book_animated.is_playing(): 
+			$Book_animated.stop()
+		
+		$Book_animated.frame = 0
+		$Book_animated.play("close")
+		yield($Book_animated, "animation_finished")
+		
+		$Book_animated.hide()
+	else:
+		$Book_animated.stop()
 	$ShelfButton.modulate.a = 1.0
 	$Background.modulate.a = 1.0
-	$BackToMenu.show()
-	$BackToMenu.disabled = false
-
-	if $Book_animated.is_playing(): $Book_animated.stop()
-	$Book_animated.frame=0
-	$Book_animated.play("close")
-	yield($Book_animated, "animation_finished")
-	$Book_animated.hide()
+	$BackToMap.show()
+	$BackToMap.disabled = false
 	ui_blocker.hide()
 
-# --- FUNGSI PENDUKUNG (UI/ANIMASI) ---
 func update_cat_position():
 	var ratio = float($ProgressBar.value) / float($ProgressBar.max_value)
 	var bar_width = $ProgressBar.rect_size.x
@@ -537,8 +458,7 @@ func update_health_display():
 		if i < health:
 			hearts[i].modulate = Color(1, 1, 1)
 		else:
-			hearts[i].modulate = Color(0.6, 0.6, 0.6) # Jadi abu-abu
-			# Animasi hati hilang
+			hearts[i].modulate = Color(0.6, 0.6, 0.6)
 			create_tween().tween_property(hearts[i], "rect_position:y", -20, 0.5)
 
 func Menupressed():
@@ -553,14 +473,19 @@ func _on_shelf_exited():
 
 func show_hover(text, shelf_node):
 	hover_label.text = text
+	hover_label.rect_size = Vector2(0, 0)
 	hover_label.show()
-	# (Kode posisi hover tetap sama)
-	var shelf_pos = shelf_node.rect_global_position
-	var shelf_size = shelf_node.rect_size
-	hover_label.rect_global_position = Vector2(
-		shelf_pos.x + shelf_size.x / 2 - hover_label.rect_size.x / 2,
-		shelf_pos.y + shelf_size.y + 5
-	)
+	yield(get_tree(), "idle_frame")
+	if is_instance_valid(shelf_node):
+		var global_pos = shelf_node.rect_global_position
+		var total_scale = shelf_node.get_global_transform().get_scale()
+		var true_width = shelf_node.rect_size.x * total_scale.x
+		var true_height = shelf_node.rect_size.y * total_scale.y
+		var pos_x = global_pos.x + (true_width / 2) - (hover_label.rect_size.x / 2)
+		var pos_y = global_pos.y + true_height + 5
+		
+		hover_label.rect_global_position = Vector2(pos_x, pos_y)
+		hover_label.raise()
 
 func show_quiz_ui_animation():
 	var tween = get_tree().create_tween() 
@@ -572,15 +497,6 @@ func show_quiz_ui_animation():
 	var t1 = $Tween.interpolate_property(bar, "rect_position:y", start_pos_bar, start_pos_bar - 100, 0.6, Tween.TRANS_BACK, Tween.EASE_OUT)
 	var t2 = $Tween.interpolate_property(bar, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	$Tween.interpolate_property($ProgressCat1, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-
-	var btn_next = $ProgressBar/A2
-	var btn_back = $ProgressBar/A3
-	for b in [btn_next, btn_back]:
-		var start_pos = b.rect_position.y + 60
-		b.rect_position.y = start_pos
-		b.modulate.a = 0
-		$Tween.interpolate_property(b, "rect_position:y", start_pos, start_pos - 60, 0.6, Tween.TRANS_BACK, Tween.EASE_OUT)
-		$Tween.interpolate_property(b, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 
 	var hearts = $QuizUI/Hearts.get_children()
 	for i in range(hearts.size()):
@@ -610,7 +526,7 @@ func reset_state():
 	$ProgressBar.hide()
 	$QuizUI/Hearts.hide()
 	$ProgressCat1.hide()
-
+	if failed_sprite: failed_sprite.hide() 
 	ui_blocker.hide()
 
 	var hearts = $QuizUI/Hearts.get_children()

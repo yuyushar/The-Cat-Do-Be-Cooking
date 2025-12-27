@@ -5,26 +5,52 @@ var locations = {
 	"KitchenButton": {"label": "Dapur", "scene": "res://Scene/Kitchen.tscn"},
 	"LibraryButton": {"label": "Perpustakaan", "scene": "res://Scene/Library.tscn"}
 }
-onready var blocked_popup = $BlockedPopup 
+onready var padlock = $KitchenButton/PadlockICon
 func _ready():
 	$CanvasLayer.show()
 	var fade = $CanvasLayer/ColorRect
 	fade.modulate.a = 1.0
 	var tw = get_tree().create_timer(1.0)
 	create_tween().tween_property(fade,"modulate:a",0.0,1.0).set_trans(Tween.TRANS_SINE)
-	yield(get_tree().create_timer(1.0), "timeout")
-	$CanvasLayer.hide()
 		
 	for btn_name in locations.keys():
 		var btn = get_node(btn_name)
+		btn.rect_pivot_offset = btn.rect_size / 2
 		btn.connect("mouse_entered", self, "_on_btn_hover", [btn_name])
 		btn.connect("mouse_exited", self, "_on_btn_exit")
 		btn.connect("pressed", self, "_on_btn_pressed", [btn_name])
-	
+	padlock.rect_pivot_offset = padlock.rect_size / 2
 	$HoverLabel.visible = false
 	$HintButton.connect("pressed", self, "_on_HintButton_pressed")
-	if blocked_popup.has_node("CloseBlockButton"):
-		blocked_popup.get_node("CloseBlockButton").connect("pressed", self, "_on_CloseBlockButton_pressed")
+	padlock.hide()
+	if GameData.owned_recipes.size() > 0:
+		# Punya resep, tapi BELUM nonton animasi
+		if GameData.has_played_unlock_anim == false:
+			padlock.show() # Munculkan paksa untuk animasi
+			padlock.modulate.a = 1.0
+			
+			var tw_lock = create_tween()
+			tw_lock.tween_interval(0.5)
+			tw_lock.tween_property(padlock, "modulate:a", 0.0, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			tw_lock.parallel().tween_property(padlock, "rect_scale", Vector2(1.5, 1.5), 1.0)
+			
+			yield(tw_lock, "finished")
+			
+			padlock.hide()
+			GameData.has_played_unlock_anim = true
+			
+		else:
+			# Punya resep & SUDAH nonton animasi
+			# Tidak perlu ngapa-ngapain, karena defaultnya sudah .hide()
+			pass 
+			
+	else:
+		# Belum punya resep sama sekali -> Munculkan gembok
+		padlock.show()
+		padlock.modulate.a = 1.0
+		padlock.rect_scale = Vector2(1, 1)
+	yield(get_tree().create_timer(1.0), "timeout")
+	$CanvasLayer.hide()
 func _on_btn_hover(btn_name):
 	var btn = get_node(btn_name)
 	btn.rect_scale = Vector2(1.1, 1.1)
@@ -38,12 +64,10 @@ func _on_btn_exit():
 
 func _on_btn_pressed(btn_name):
 	if btn_name == "KitchenButton":
-		# Cek ke GameData: Apakah list resep masih kosong?
-		# Ganti 'GameData.unlocked_recipes' dengan variabel penyimpanan aslimu
-		# Contoh: Jika kamu menyimpan resep di array:
-		if GameData.owned_recipes.size() == 0:
-			show_blocked_popup()
-			return # BERHENTI DI SINI, jangan jalankan kode pindah scene di bawah
+		if padlock.visible:
+			print("Dapur terkunci! (Ada gembok)")
+			animasi_gembok_terkunci()
+			return # BERHENTI DI SINI, jangan pindah scene
 	var scene_path = locations[btn_name]["scene"]
 	get_tree().change_scene(scene_path)
 	$CanvasLayer.show()
@@ -51,17 +75,22 @@ func _on_btn_pressed(btn_name):
 	create_tween().tween_property(fade, "modulate:a", 1.0, 0.5)
 	yield(get_tree().create_timer(0.5), "timeout")
 
-func show_blocked_popup():
-	blocked_popup.show()
-	# Opsional: Animasi pop-up (Scale dari 0 ke 1)
-	blocked_popup.rect_scale = Vector2(0, 0)
-	create_tween().tween_property(blocked_popup, "rect_scale", Vector2(1, 1), 0.2).set_trans(Tween.TRANS_BACK)
+func animasi_gembok_terkunci():
+	# Pastikan pivot di tengah biar goyangnya bagus
+	padlock.rect_pivot_offset = padlock.rect_size / 2
+	
+	var tw = create_tween()
+	# Goyang ke kiri sedikit, lalu ke kanan, lalu balik tengah (Shake effect)
+	tw.tween_property(padlock, "rect_rotation", 15.0, 0.05)
+	tw.tween_property(padlock, "rect_rotation", -15.0, 0.05)
+	tw.tween_property(padlock, "rect_rotation", 10.0, 0.05)
+	tw.tween_property(padlock, "rect_rotation", -10.0, 0.05)
+	tw.tween_property(padlock, "rect_rotation", 0.0, 0.05)
+	
 	
 func _process(delta):
 	if $HoverLabel.visible:
 		$HoverLabel.rect_global_position = get_viewport().get_mouse_position() + Vector2(0, -30)
 
-func _on_CloseBlockButton_pressed():
-	blocked_popup.hide()
 func _on_HintButton_pressed():
 	get_node("TutorialPopup").popup_centered()
