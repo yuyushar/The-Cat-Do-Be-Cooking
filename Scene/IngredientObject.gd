@@ -37,9 +37,10 @@ func _input(event):
 
 func cek_lokasi_jatuh():
 	is_dragging = false 
-	
-	# Ambil referensi PotArea di Kitchen
-	# Asumsi IngredientObject adalah anak langsung dari Kitchen
+	if not get_parent().has_node("PotArea"):
+		print("ERROR: Node 'PotArea' tidak ditemukan di Kitchen!")
+		animasi_buang() # Anggap gagal biar aman
+		return
 	var pot = get_parent().get_node("PotArea") 
 	
 	var pot_x_center = pot.global_position.x

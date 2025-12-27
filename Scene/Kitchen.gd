@@ -33,7 +33,10 @@ func _ready():
 	for nama in daftar_nama:
 		var btn = TextureButton.new()
 		var path = "res://asset/ingridients/" + nama.to_lower() + ".png"
+		
+		# --- FIX 1: Langsung Load tanpa file_exists ---
 		btn.texture_normal = load(path)
+		
 		btn.expand = true
 		btn.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED 
 		btn.rect_min_size = Vector2(158, 158)
@@ -44,17 +47,26 @@ func _ready():
 		
 	var btn_continue = day_popup.get_node("VBoxContainer/ContinueButton")
 	var btn_map = day_popup.get_node("VBoxContainer/MapButton")
-	$Recipe/NextPage.connect("pressed", self, "_on_NextPage_pressed")
-	$BtnBukaResep.connect("pressed", self, "_on_BtnBukaResep_pressed")
-	$Recipe/PrevPage.connect("pressed", self, "_on_PrevPage_pressed")
-	btn_continue.connect("pressed", self, "_on_ContinueButton_pressed")
-	btn_map.connect("pressed", self, "_on_MapButton_pressed")
+	
+	# Cek koneksi signal
+	if not $Recipe/NextPage.is_connected("pressed", self, "_on_NextPage_pressed"):
+		$Recipe/NextPage.connect("pressed", self, "_on_NextPage_pressed")
+	if not $BtnBukaResep.is_connected("pressed", self, "_on_BtnBukaResep_pressed"):
+		$BtnBukaResep.connect("pressed", self, "_on_BtnBukaResep_pressed")
+	if not $Recipe/PrevPage.is_connected("pressed", self, "_on_PrevPage_pressed"):
+		$Recipe/PrevPage.connect("pressed", self, "_on_PrevPage_pressed")
+	if not btn_continue.is_connected("pressed", self, "_on_ContinueButton_pressed"):
+		btn_continue.connect("pressed", self, "_on_ContinueButton_pressed")
+	if not btn_map.is_connected("pressed", self, "_on_MapButton_pressed"):
+		btn_map.connect("pressed", self, "_on_MapButton_pressed")
+		
 	_add_hover($Spoon, "Aduk Masakan", "atas")
 	_add_hover($BtnBukaResep, "Buku Resep", "atas")
 	_add_hover($Recipe/NextPage, "Halaman Selanjutnya", "bawah")
 	_add_hover($Recipe/PrevPage, "Halaman Sebelumnya", "bawah")
 	_add_hover(btn_continue, "Lanjut Hari Berikutnya", "atas")
 	_add_hover(btn_map, "Kembali ke Peta Utama", "atas")
+	
 	npc_default_pos = order_ui.get_node("Npc1").position
 	day_popup.hide()
 	dark_overlay.hide()
@@ -63,6 +75,7 @@ func _ready():
 	buka_halaman(0)
 	update_recipe_book_visuals()
 	mulai_pesanan_baru()
+
 func mulai_pesanan_baru():
 	for i in range(1, 7):
 		order_ui.get_node("Npc" + str(i)).hide()
@@ -81,6 +94,7 @@ func mulai_pesanan_baru():
 	tw.set_parallel(true)
 	tw.tween_property(next_npc, "position", npc_default_pos, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(next_npc, "modulate:a", 1.0, 0.4)
+	
 	if GameData.owned_recipes.size() > 0:
 		resep_target_nama = GameData.owned_recipes[randi() % GameData.owned_recipes.size()]
 		
@@ -96,11 +110,22 @@ func mulai_pesanan_baru():
 			bahan_target_list.append(item.strip_edges())
 		yield(get_tree().create_timer(0.5), "timeout")
 		var bubble = $Order/Control/OrderBubble
-		bubble.get_node("FoodLabel").text = resep_target_nama
+		
+		# --- HAPUS PENGATURAN TEXT LABEL ---
+		# bubble.get_node("FoodLabel").text = resep_target_nama
+		# Jika ingin menyembunyikan labelnya sekalian:
+		if bubble.has_node("FoodLabel"):
+			bubble.get_node("FoodLabel").hide()
+		
 		bubble.rect_pivot_offset = bubble.rect_size / 2
+		
+		# --- FIX 2: Langsung Load Food Icon ---
 		var icon_path = "res://asset/food/" + resep_target_nama.to_lower().replace(" ", "_") + ".png"
-		if File.new().file_exists(icon_path):
-			bubble.get_node("FoodIcon").texture = load(icon_path)
+		var tex = load(icon_path)
+		if tex:
+			bubble.get_node("FoodIcon").texture = tex
+		else:
+			print("GAGAL LOAD Gambar Order: ", icon_path)
 		
 		bubble.show()
 		bubble.rect_scale = Vector2(0,0)
@@ -109,6 +134,7 @@ func mulai_pesanan_baru():
 		print("DEBUG: Pelanggan minta: ", resep_target_nama)
 	else:
 		print("DEBUG: Player belum punya resep apapun!")
+
 func _on_rak_diklik(nama, path):
 	var new_item = ingredient_scene.instance()
 	add_child(new_item)
@@ -116,15 +142,15 @@ func _on_rak_diklik(nama, path):
 	new_item.setup_bahan(nama, path)
 
 func tambah_bahan_ke_list(nama, pos_jatuh):
-	if pos_jatuh.y > 600:
-		bahan_di_panci.append(nama)
-		print("Isi Panci: ", bahan_di_panci)
-	else:
-		print("Bahan terbuang ke samping!") 
+	# Percaya pada IngredientObject soal posisi jatuh
+	bahan_di_panci.append(nama)
+	print("Isi Panci: ", bahan_di_panci)
+
 func _add_hover(btn_node, text, posisi="atas"):
 	if not btn_node.is_connected("mouse_entered", self, "_on_btn_hover"):
 		btn_node.connect("mouse_entered", self, "_on_btn_hover", [btn_node, text, posisi])
 		btn_node.connect("mouse_exited", self, "_on_btn_exit")
+
 func _on_Spoon_pressed():
 	if bahan_di_panci.size() == 0:
 		print("Panci kosong, tidak bisa mengaduk!")
@@ -209,13 +235,25 @@ func tampilkan_popup_hari_selesai():
 	day_popup.show()
 	day_popup.rect_scale = Vector2(0, 0)
 	day_popup.rect_pivot_offset = day_popup.rect_size / 2
+	
+	var dimmer = day_popup.get_node_or_null("ColorPicker")
+	
+	if dimmer:
+		dimmer.show()
+		dimmer.modulate.a = 0 # Mulai dari transparan
+	
 	var tween = create_tween()
+	tween.set_parallel(true)
 	tween.tween_property(day_popup, "rect_scale", Vector2(1, 1), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	if dimmer:
+		tween.tween_property(dimmer, "modulate:a", 0.65, 0.5)
+
 	print("Hari selesai! Muncul pop-up.")
 	
 func _on_ContinueButton_pressed():
 	customer_count = 0
-	day_popup.hide()
+	day_popup.hide() # Ini akan otomatis menyembunyikan ColorPicker karena dia anaknya
 	for i in range(1, 7):
 		var npc = order_ui.get_node("Npc" + str(i))
 		npc.hide()
@@ -227,6 +265,7 @@ func _on_ContinueButton_pressed():
 func _on_MapButton_pressed():
 	FX.play_slow()
 	get_tree().change_scene("res://Scene/Map.tscn")
+
 func _on_NextPage_pressed():
 	if is_busy or current_page_index >= pages.size() - 1: return
 	
@@ -262,6 +301,7 @@ func _on_PrevPage_pressed():
 	$Recipe/Pages.show()
 	
 	is_busy = false
+
 func buka_halaman(index):
 	current_page_index = index
 	
@@ -276,6 +316,7 @@ func buka_halaman(index):
 		btn_prev.visible = (index > 0)
 	if btn_next:
 		btn_next.visible = (index < pages.size() - 1)
+
 func update_recipe_book_visuals():
 	var db = GameData.recipe_database
 	
@@ -292,9 +333,12 @@ func update_recipe_book_visuals():
 					slot.modulate = Color(1, 1, 1)
 					slot.get_node("FoodName").text = nama_resep
 					
+					# --- FIX 3: Load Gambar Buku Resep ---
 					var food_path = "res://asset/food/" + nama_resep.to_lower().replace(" ", "_") + ".png"
-					if File.new().file_exists(food_path):
-						slot.get_node("FoodIcon").texture = load(food_path)
+					var tex = load(food_path)
+					if tex:
+						slot.get_node("FoodIcon").texture = tex
+					
 					slot.get_node("IngLabel").text = data["ing"].replace(",", " +")
 					var container = slot.get_node("IngContainer")
 					for child in container.get_children():
@@ -305,11 +349,13 @@ func update_recipe_book_visuals():
 						var icon_rect = TextureRect.new()
 						var icon_path = "res://asset/ingridients/" + nama_bersih.to_lower() + ".png"
 						
-						if File.new().file_exists(icon_path):
-							icon_rect.texture = load(icon_path)
+						# --- FIX 4: Load Ikon Bahan ---
+						var icon_tex = load(icon_path)
+						if icon_tex:
+							icon_rect.texture = icon_tex
 							icon_rect.expand = true
 							icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-							icon_rect.rect_min_size = Vector2(40, 40) # Ukuran ikon kecil
+							icon_rect.rect_min_size = Vector2(40, 40)
 							container.add_child(icon_rect)
 				
 				else:
@@ -319,6 +365,7 @@ func update_recipe_book_visuals():
 					slot.get_node("FoodIcon").texture = null
 					for child in slot.get_node("IngContainer").get_children():
 						child.queue_free()
+
 func _on_BtnBukaResep_pressed():
 	if is_busy: return
 	
@@ -372,12 +419,16 @@ func cari_masakan_dari_isi_panci():
 			if bahan_sekarang == target_sort:
 				return data["name"]
 	return null
+
 func tampilkan_animasi_hasil(texture_path, is_darkened):
-	if File.new().file_exists(texture_path):
-		food_result_display.texture = load(texture_path)
+	# --- FIX 5: Load Animasi Hasil ---
+	var tex = load(texture_path)
+	if tex:
+		food_result_display.texture = tex
 	else:
-		print("Gambar tidak ditemukan: ", texture_path)
+		print("Gambar hasil tidak ditemukan: ", texture_path)
 		return
+	
 	if is_darkened:
 		food_result_display.modulate = Color(0.4, 0.4, 0.4, 1)
 	else:
@@ -406,10 +457,11 @@ func _on_btn_hover(btn_node, text, posisi = "atas"):
 
 	hover_label.text = text
 	hover_label.rect_size = Vector2(0, 0)
-	hover_label.show()
 	yield(get_tree(), "idle_frame") 
 	
 	if is_instance_valid(btn_node):
+		if not btn_node.get_global_rect().has_point(btn_node.get_global_mouse_position()):
+			return
 		var global_pos = btn_node.rect_global_position
 		var total_scale = btn_node.get_global_transform().get_scale()
 		var true_width = btn_node.rect_size.x * total_scale.x
@@ -425,8 +477,7 @@ func _on_btn_hover(btn_node, text, posisi = "atas"):
 		
 		hover_label.rect_global_position = Vector2(pos_x, pos_y)
 		hover_label.raise()
+		hover_label.show()
 
 func _on_btn_exit():
-	hover_label.hide()
-func _on_ingredient_exit():
 	hover_label.hide()

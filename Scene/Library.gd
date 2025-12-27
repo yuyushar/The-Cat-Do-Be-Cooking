@@ -338,10 +338,11 @@ func update_result_popup_content():
 	if result_popup.has_node("FoodIcon"):
 		var nama_file = data["name"].to_lower().replace(" ", "_") + ".png"
 		var path = "res://asset/food/" + nama_file
-		if File.new().file_exists(path):
-			result_popup.get_node("FoodIcon").texture = load(path)
+		var loaded_tex = load(path)
+		if loaded_tex:
+			result_popup.get_node("FoodIcon").texture = loaded_tex
 		else:
-			print("Gambar makanan tidak ketemu: ", path)	
+			print("Gambar makanan GAGAL di-load: ", path)
 	if result_popup.has_node("FoodNameLabel"):
 		result_popup.get_node("FoodNameLabel").text = data["name"]
 	if result_popup.has_node("IngredientsLabel"): 
@@ -358,8 +359,8 @@ func update_result_popup_content():
 			var nama_bersih = nama_bahan_mentah.strip_edges()
 			var nama_file = str(nama_bersih).to_lower()
 			var path = "res://asset/ingridients/" + nama_file + ".png"
-			var file_check = File.new()
-			if file_check.file_exists(path):
+			var tex_bahan = load(path)
+			if tex_bahan:
 				var texture_rect = TextureRect.new()
 				texture_rect.texture = load(path)
 				texture_rect.expand = true

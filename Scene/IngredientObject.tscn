@@ -14,12 +14,3 @@ script = ExtResource( 14 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
-
-[node name="Button" type="Button" parent="."]
-margin_left = 813.0
-margin_top = 2.0
-margin_right = 1366.0
-margin_bottom = 770.0
-flat = true
-
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

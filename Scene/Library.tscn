@@ -555,7 +555,6 @@ expand = true
 stretch_mode = 5
 
 [node name="ResultPopup" type="Panel" parent="QuizUI"]
-visible = false
 margin_left = 270.0
 margin_top = 96.0
 margin_right = 1086.0
