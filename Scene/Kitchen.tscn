@@ -381,6 +381,7 @@ columns = 3
 [node name="PotFront" type="Sprite" parent="."]
 position = Vector2( 510, 530 )
 scale = Vector2( 0.690281, 0.690281 )
+z_index = 10
 texture = ExtResource( 18 )
 
 [node name="VisualPotArea" type="Area2D" parent="."]

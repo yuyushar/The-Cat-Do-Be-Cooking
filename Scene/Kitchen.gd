@@ -1,6 +1,4 @@
 extends Control
-
-# Memuat template bahan
 onready var ingredient_scene = preload("res://Scene/IngredientObject.tscn")
 onready var hover_label = $HoverLabel
 var bahan_di_panci = []
@@ -12,7 +10,6 @@ var is_busy = false
 var current_npc = null
 var npc_default_pos = Vector2.ZERO
 onready var order_ui = $Order/Control
-onready var order_label = $Order/Control/Label
 onready var recipe_book_ui = $Recipe
 onready var day_popup = $DayFinishedPopup
 onready var dark_overlay = $DarkOverlay
@@ -48,7 +45,6 @@ func _ready():
 	var btn_continue = day_popup.get_node("VBoxContainer/ContinueButton")
 	var btn_map = day_popup.get_node("VBoxContainer/MapButton")
 	
-	# Cek koneksi signal
 	if not $Recipe/NextPage.is_connected("pressed", self, "_on_NextPage_pressed"):
 		$Recipe/NextPage.connect("pressed", self, "_on_NextPage_pressed")
 	if not $BtnBukaResep.is_connected("pressed", self, "_on_BtnBukaResep_pressed"):
@@ -111,9 +107,6 @@ func mulai_pesanan_baru():
 		yield(get_tree().create_timer(0.5), "timeout")
 		var bubble = $Order/Control/OrderBubble
 		
-		# --- HAPUS PENGATURAN TEXT LABEL ---
-		# bubble.get_node("FoodLabel").text = resep_target_nama
-		# Jika ingin menyembunyikan labelnya sekalian:
 		if bubble.has_node("FoodLabel"):
 			bubble.get_node("FoodLabel").hide()
 		
@@ -142,14 +135,147 @@ func _on_rak_diklik(nama, path):
 	new_item.setup_bahan(nama, path)
 
 func tambah_bahan_ke_list(nama, pos_jatuh):
-	# Percaya pada IngredientObject soal posisi jatuh
 	bahan_di_panci.append(nama)
 	print("Isi Panci: ", bahan_di_panci)
 
-func _add_hover(btn_node, text, posisi="atas"):
-	if not btn_node.is_connected("mouse_entered", self, "_on_btn_hover"):
-		btn_node.connect("mouse_entered", self, "_on_btn_hover", [btn_node, text, posisi])
-		btn_node.connect("mouse_exited", self, "_on_btn_exit")
+func update_recipe_book_visuals():
+	var db = GameData.recipe_database
+	
+	for mapel in db.keys():
+		for diff in db[mapel].keys():
+			var data = db[mapel][diff]
+			var nama_resep = data["name"]
+			var slot_path = "Recipe/Pages/Page_" + mapel + "/Slot_" + diff
+			
+			if has_node(slot_path):
+				var slot = get_node(slot_path)
+				
+				if nama_resep in GameData.owned_recipes:
+					slot.modulate = Color(1, 1, 1)
+					slot.get_node("FoodName").text = nama_resep
+					
+					# --- FIX 3: Load Gambar Buku Resep ---
+					var food_path = "res://asset/food/" + nama_resep.to_lower().replace(" ", "_") + ".png"
+					var tex = load(food_path)
+					if tex:
+						slot.get_node("FoodIcon").texture = tex
+					
+					slot.get_node("IngLabel").text = data["ing"].replace(",", " +")
+					var container = slot.get_node("IngContainer")
+					for child in container.get_children():
+						child.queue_free()
+					var list_bahan = data["ing"].split(",")
+					for bahan in list_bahan:
+						var nama_bersih = bahan.strip_edges()
+						var icon_rect = TextureRect.new()
+						var icon_path = "res://asset/ingridients/" + nama_bersih.to_lower() + ".png"
+						
+						# --- FIX 4: Load Ikon Bahan ---
+						var icon_tex = load(icon_path)
+						if icon_tex:
+							icon_rect.texture = icon_tex
+							icon_rect.expand = true
+							icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+							icon_rect.rect_min_size = Vector2(40, 40)
+							container.add_child(icon_rect)
+				
+				else:
+					slot.modulate = Color(0.2, 0.2, 0.2)
+					slot.get_node("FoodName").text = "???"
+					slot.get_node("IngLabel").text = "Terkunci"
+					slot.get_node("FoodIcon").texture = null
+					for child in slot.get_node("IngContainer").get_children():
+						child.queue_free()
+
+func _on_BtnBukaResep_pressed():
+	if is_busy: return
+	
+	is_busy = true
+	
+	if recipe_book_ui.visible:
+		var tween = create_tween()
+		tween.tween_property(dark_overlay, "modulate:a", 0.0, 0.3)
+		yield(tween, "finished")
+		dark_overlay.hide()
+		$Recipe/Pages.hide()
+		$Recipe/NextPage.hide()
+		$Recipe/PrevPage.hide()
+		
+		$Recipe/Book_animated.play("close")
+		yield(get_tree().create_timer(0.7), "timeout")
+		
+		recipe_book_ui.hide()
+		$PotFront.z_index = 10
+	else:
+		$PotFront.z_index = 0
+		dark_overlay.show()
+		dark_overlay.modulate.a = 0
+		var tween=create_tween()
+		tween.tween_property(dark_overlay, "modulate:a", 0.55, 0.3)
+		update_recipe_book_visuals()
+		$Recipe/Pages.hide()
+		$Recipe/NextPage.hide()
+		$Recipe/PrevPage.hide()
+		
+		recipe_book_ui.show()
+		$Recipe/Book_animated.play("open")
+		
+		yield(get_tree().create_timer(0.5), "timeout")
+		
+		$Recipe/Pages.show()
+		buka_halaman(current_page_index)
+	is_busy = false
+	
+func buka_halaman(index):
+	current_page_index = index
+	
+	for i in range(pages.size()):
+		if pages[i] != null:
+			pages[i].visible = (i == index)
+	var btn_prev = get_node_or_null("Recipe/PrevPage") 
+	var btn_next = get_node_or_null("Recipe/NextPage")
+	if btn_prev == null: btn_prev = get_node_or_null("PrevPage")
+	if btn_next == null: btn_next = get_node_or_null("NextPage")
+	if btn_prev:
+		btn_prev.visible = (index > 0)
+	if btn_next:
+		btn_next.visible = (index < pages.size() - 1)
+
+func _on_NextPage_pressed():
+	if is_busy or current_page_index >= pages.size() - 1: return
+	
+	is_busy = true
+	$Recipe/Pages.hide()
+	
+	$Recipe/Book_animated.speed_scale = 1.0
+	$Recipe/Book_animated.frame = 0
+	$Recipe/Book_animated.play("next")
+	
+	yield(get_tree().create_timer(0.4), "timeout")
+	
+	current_page_index += 1
+	buka_halaman(current_page_index)
+	$Recipe/Pages.show()
+	is_busy = false
+
+func _on_PrevPage_pressed():
+	if is_busy or current_page_index <= 0: 
+		return
+	
+	is_busy = true
+	$Recipe/Pages.hide()
+	
+	$Recipe/Book_animated.speed_scale = 1.0
+	$Recipe/Book_animated.frame = 0
+	$Recipe/Book_animated.play("prev")
+	
+	yield(get_tree().create_timer(0.4), "timeout")
+	
+	current_page_index -= 1
+	buka_halaman(current_page_index)
+	$Recipe/Pages.show()
+	
+	is_busy = false
 
 func _on_Spoon_pressed():
 	if bahan_di_panci.size() == 0:
@@ -212,198 +338,6 @@ func cek_hasil_masakan():
 			yield(tampilkan_animasi_hasil(path_trash, false), "completed")
 		bahan_di_panci.clear()
 
-func pindah_ke_customer_selanjutnya():
-	bahan_di_panci.clear()
-	var bubble = $Order/Control/OrderBubble
-	create_tween().tween_property(bubble, "rect_scale", Vector2(0,0), 0.2)
-	if current_npc != null:
-		var tw_exit = create_tween()
-		tw_exit.set_parallel(true)
-		var target_y = npc_default_pos.y + 600
-		tw_exit.tween_property(current_npc, "position:y", target_y, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-		tw_exit.tween_property(current_npc, "modulate:a", 0.0, 0.5)
-		yield(tw_exit, "finished")
-		
-		current_npc.hide()
-		current_npc = null
-	if customer_count >= max_customers:
-		tampilkan_popup_hari_selesai()
-	else:
-		mulai_pesanan_baru()
-
-func tampilkan_popup_hari_selesai():
-	day_popup.show()
-	day_popup.rect_scale = Vector2(0, 0)
-	day_popup.rect_pivot_offset = day_popup.rect_size / 2
-	
-	var dimmer = day_popup.get_node_or_null("ColorPicker")
-	
-	if dimmer:
-		dimmer.show()
-		dimmer.modulate.a = 0 # Mulai dari transparan
-	
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(day_popup, "rect_scale", Vector2(1, 1), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	
-	if dimmer:
-		tween.tween_property(dimmer, "modulate:a", 0.65, 0.5)
-
-	print("Hari selesai! Muncul pop-up.")
-	
-func _on_ContinueButton_pressed():
-	customer_count = 0
-	day_popup.hide() # Ini akan otomatis menyembunyikan ColorPicker karena dia anaknya
-	for i in range(1, 7):
-		var npc = order_ui.get_node("Npc" + str(i))
-		npc.hide()
-		npc.position = npc_default_pos 
-		npc.modulate.a = 1.0
-	mulai_pesanan_baru()
-	print("Memulai hari baru di Kitchen.")
-
-func _on_MapButton_pressed():
-	FX.play_slow()
-	get_tree().change_scene("res://Scene/Map.tscn")
-
-func _on_NextPage_pressed():
-	if is_busy or current_page_index >= pages.size() - 1: return
-	
-	is_busy = true
-	$Recipe/Pages.hide()
-	
-	$Recipe/Book_animated.speed_scale = 1.0
-	$Recipe/Book_animated.frame = 0
-	$Recipe/Book_animated.play("next")
-	
-	yield(get_tree().create_timer(0.4), "timeout")
-	
-	current_page_index += 1
-	buka_halaman(current_page_index)
-	$Recipe/Pages.show()
-	is_busy = false
-
-func _on_PrevPage_pressed():
-	if is_busy or current_page_index <= 0: 
-		return
-	
-	is_busy = true
-	$Recipe/Pages.hide()
-	
-	$Recipe/Book_animated.speed_scale = 1.0
-	$Recipe/Book_animated.frame = 0
-	$Recipe/Book_animated.play("prev")
-	
-	yield(get_tree().create_timer(0.4), "timeout")
-	
-	current_page_index -= 1
-	buka_halaman(current_page_index)
-	$Recipe/Pages.show()
-	
-	is_busy = false
-
-func buka_halaman(index):
-	current_page_index = index
-	
-	for i in range(pages.size()):
-		if pages[i] != null:
-			pages[i].visible = (i == index)
-	var btn_prev = get_node_or_null("Recipe/PrevPage") 
-	var btn_next = get_node_or_null("Recipe/NextPage")
-	if btn_prev == null: btn_prev = get_node_or_null("PrevPage")
-	if btn_next == null: btn_next = get_node_or_null("NextPage")
-	if btn_prev:
-		btn_prev.visible = (index > 0)
-	if btn_next:
-		btn_next.visible = (index < pages.size() - 1)
-
-func update_recipe_book_visuals():
-	var db = GameData.recipe_database
-	
-	for mapel in db.keys():
-		for diff in db[mapel].keys():
-			var data = db[mapel][diff]
-			var nama_resep = data["name"]
-			var slot_path = "Recipe/Pages/Page_" + mapel + "/Slot_" + diff
-			
-			if has_node(slot_path):
-				var slot = get_node(slot_path)
-				
-				if nama_resep in GameData.owned_recipes:
-					slot.modulate = Color(1, 1, 1)
-					slot.get_node("FoodName").text = nama_resep
-					
-					# --- FIX 3: Load Gambar Buku Resep ---
-					var food_path = "res://asset/food/" + nama_resep.to_lower().replace(" ", "_") + ".png"
-					var tex = load(food_path)
-					if tex:
-						slot.get_node("FoodIcon").texture = tex
-					
-					slot.get_node("IngLabel").text = data["ing"].replace(",", " +")
-					var container = slot.get_node("IngContainer")
-					for child in container.get_children():
-						child.queue_free()
-					var list_bahan = data["ing"].split(",")
-					for bahan in list_bahan:
-						var nama_bersih = bahan.strip_edges()
-						var icon_rect = TextureRect.new()
-						var icon_path = "res://asset/ingridients/" + nama_bersih.to_lower() + ".png"
-						
-						# --- FIX 4: Load Ikon Bahan ---
-						var icon_tex = load(icon_path)
-						if icon_tex:
-							icon_rect.texture = icon_tex
-							icon_rect.expand = true
-							icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-							icon_rect.rect_min_size = Vector2(40, 40)
-							container.add_child(icon_rect)
-				
-				else:
-					slot.modulate = Color(0.2, 0.2, 0.2) # Gelap
-					slot.get_node("FoodName").text = "???"
-					slot.get_node("IngLabel").text = "Terkunci"
-					slot.get_node("FoodIcon").texture = null
-					for child in slot.get_node("IngContainer").get_children():
-						child.queue_free()
-
-func _on_BtnBukaResep_pressed():
-	if is_busy: return
-	
-	is_busy = true
-	
-	if recipe_book_ui.visible:
-		var tween = create_tween()
-		tween.tween_property(dark_overlay, "modulate:a", 0.0, 0.3)
-		yield(tween, "finished")
-		dark_overlay.hide()
-		$Recipe/Pages.hide()
-		$Recipe/NextPage.hide()
-		$Recipe/PrevPage.hide()
-		
-		$Recipe/Book_animated.play("close")
-		yield(get_tree().create_timer(0.7), "timeout")
-		
-		recipe_book_ui.hide()
-	else:
-		dark_overlay.show()
-		dark_overlay.modulate.a = 0
-		var tween=create_tween()
-		tween.tween_property(dark_overlay, "modulate:a", 0.55, 0.3)
-		update_recipe_book_visuals()
-		
-		$Recipe/Pages.hide()
-		$Recipe/NextPage.hide()
-		$Recipe/PrevPage.hide()
-		
-		recipe_book_ui.show()
-		$Recipe/Book_animated.play("open")
-		
-		yield(get_tree().create_timer(0.5), "timeout")
-		
-		$Recipe/Pages.show()
-		buka_halaman(current_page_index)
-	is_busy = false
-
 func cari_masakan_dari_isi_panci():
 	var bahan_sekarang = Array(bahan_di_panci)
 	bahan_sekarang.sort()	
@@ -450,6 +384,66 @@ func tampilkan_animasi_hasil(texture_path, is_darkened):
 	
 	food_result_display.hide()
 	food_result_display.modulate = Color(1, 1, 1, 1)
+
+func pindah_ke_customer_selanjutnya():
+	bahan_di_panci.clear()
+	var bubble = $Order/Control/OrderBubble
+	create_tween().tween_property(bubble, "rect_scale", Vector2(0,0), 0.2)
+	if current_npc != null:
+		var tw_exit = create_tween()
+		tw_exit.set_parallel(true)
+		var target_y = npc_default_pos.y + 600
+		tw_exit.tween_property(current_npc, "position:y", target_y, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		tw_exit.tween_property(current_npc, "modulate:a", 0.0, 0.5)
+		yield(tw_exit, "finished")
+		
+		current_npc.hide()
+		current_npc = null
+	if customer_count >= max_customers:
+		tampilkan_popup_hari_selesai()
+	else:
+		mulai_pesanan_baru()
+
+func tampilkan_popup_hari_selesai():
+	$PotFront.z_index = 0
+	day_popup.show()
+	day_popup.rect_scale = Vector2(0, 0)
+	day_popup.rect_pivot_offset = day_popup.rect_size / 2
+	
+	var dimmer = day_popup.get_node_or_null("ColorPicker")
+	
+	if dimmer:
+		dimmer.show()
+		dimmer.modulate.a = 0
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(day_popup, "rect_scale", Vector2(1, 1), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	if dimmer:
+		tween.tween_property(dimmer, "modulate:a", 0.65, 0.5)
+
+	print("Hari selesai! Muncul pop-up.")
+
+func _on_ContinueButton_pressed():
+	customer_count = 0
+	day_popup.hide()
+	for i in range(1, 7):
+		var npc = order_ui.get_node("Npc" + str(i))
+		npc.hide()
+		npc.position = npc_default_pos 
+		npc.modulate.a = 1.0
+	mulai_pesanan_baru()
+	print("Memulai hari baru di Kitchen.")
+
+func _on_MapButton_pressed():
+	FX.play_slow()
+	get_tree().change_scene("res://Scene/Map.tscn")
+
+func _add_hover(btn_node, text, posisi="atas"):
+	if not btn_node.is_connected("mouse_entered", self, "_on_btn_hover"):
+		btn_node.connect("mouse_entered", self, "_on_btn_hover", [btn_node, text, posisi])
+		btn_node.connect("mouse_exited", self, "_on_btn_exit")
 
 func _on_btn_hover(btn_node, text, posisi = "atas"):
 	if posisi == "bawah" and (recipe_book_ui.visible or day_popup.visible):

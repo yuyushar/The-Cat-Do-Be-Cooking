@@ -183,8 +183,3 @@ anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Tween" type="Tween" parent="."]
-
-[connection signal="pressed" from="HintButton" to="TutorialPopup" method="_on_HintButton_pressed"]
-[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/PrevButton" to="TutorialPopup" method="_on_PrevButton_pressed"]
-[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/NextButton" to="TutorialPopup" method="_on_NextButton_pressed"]
-[connection signal="pressed" from="TutorialPopup/PanelContainer/VBoxContainer/ButtonBar/ExitButton" to="TutorialPopup" method="_on_ExitButton_pressed"]

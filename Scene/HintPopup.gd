@@ -1,9 +1,18 @@
 extends PopupPanel
 
 var pages = [
-	preload("res://asset/hint/hint 1.png"),
-	preload("res://asset/hint/hint 2.png"),
-	preload("res://asset/hint/hint 3.png")
+	preload("res://asset/hint/1.png"),
+	preload("res://asset/hint/2.png"),
+	preload("res://asset/hint/3.png"),
+	preload("res://asset/hint/4.png"),
+	preload("res://asset/hint/5.png"),
+	preload("res://asset/hint/6.png"),
+	preload("res://asset/hint/7.png"),
+	preload("res://asset/hint/8.png"),
+	preload("res://asset/hint/9.png"),
+	preload("res://asset/hint/10.png"),
+	preload("res://asset/hint/11.png"),
+	preload("res://asset/hint/12.png")
 ]
 
 var current_page = 0
@@ -24,12 +33,12 @@ func update_page():
 	prev_btn.disabled = current_page == 0
 	next_btn.disabled = current_page == pages.size() - 1
 
-func _on_PrevButton_pressed():
+func _on_prev():
 	if current_page > 0:
 		current_page -= 1
 		update_page()
 
-func _on_NextButton_pressed():
+func _on_next():
 	if current_page < pages.size() - 1:
 		current_page += 1
 		update_page()

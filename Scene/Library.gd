@@ -17,6 +17,7 @@ var origin_cat_x = 0
 var origin_question_x = 0
 var origin_answers_x = 0
 var origin_explanation_y = 0
+var current_win_tween: SceneTreeTween
 func _ready():
 	$BackToMap.show()
 	$BookUI.hide()
@@ -65,10 +66,6 @@ func _ready():
 	origin_answers_x = $QuizUI.get_node("Answer Button").rect_position.x
 	origin_explanation_y = $QuizUI/ExplanationLabel.rect_position.y
 	$QuizManager.load_json()
-func _add_hover(btn_node, text):
-	if not btn_node.is_connected("mouse_entered", self, "_on_result_btn_hover"):
-		btn_node.connect("mouse_entered", self, "_on_result_btn_hover", [btn_node, text])
-		btn_node.connect("mouse_exited", self, "_on_result_btn_exit")
 func _on_shelf_pressed(shelf, mapel):
 	current_mapel = mapel
 	$BackToMap.hide()
@@ -175,81 +172,29 @@ func load_current_question_to_ui():
 	btn_node.get_node("B").text = str(options[1])
 	btn_node.get_node("C").text = str(options[2])
 	btn_node.get_node("D").text = str(options[3])
-func _on_answer_pressed(pilihan_user):
-	var data = current_questions_list[current_question_index]
-	var jawaban_benar = str(data["answer"])
-	var btns = $QuizUI.get_node("Answer Button")
-	for child in btns.get_children():
-		child.disabled = true
-		
-	if pilihan_user.to_upper() == jawaban_benar.to_upper():
-		print("Benar!")
-		show_explanation_sequence(data)
-	else:
-		print("Salah!")
-		wrong_answer()
-		if health > 0:
-			for child in btns.get_children():
-				child.disabled = false
-func show_explanation_sequence(data):
-	var btns = $QuizUI.get_node("Answer Button")
-	var expl_text = "Penjelasan: " + str(data.get("Explanation", "Tidak ada penjelasan."))
-	$QuizUI/ExplanationLabel.text = expl_text
-	$QuizUI/ExplanationLabel.show()
-	$QuizUI/ExplanationLabel.modulate.a = 0
-	var tween = create_tween()
-	tween.tween_property($QuizUI/ExplanationLabel, "modulate:a", 1, 0.5)
-	yield(get_tree().create_timer(3.0), "timeout")
-	proceed_to_next_step()
-func proceed_to_next_step():
-	animate_ui_out()
-	yield(get_tree().create_timer(0.5), "timeout")
-	$QuizUI/ExplanationLabel.hide()
-	$Book_animated.frame = 0
-	$Book_animated.play("next")
-	yield($Book_animated, "animation_finished")
-	current_question_index += 1
-	$ProgressBar.value = current_question_index
-	update_cat_position()
-	if current_question_index < total_questions:
-		load_current_question_to_ui()
-		var btns = $QuizUI.get_node("Answer Button")
-		for child in btns.get_children():
-			child.disabled = false
-		animate_ui_in()
-		
-	else:
-		quiz_finished_win()
-func _on_result_btn_hover(btn_node, text):
-	hover_label.text = text
-	hover_label.rect_size = Vector2(0, 0) 
-	hover_label.show()
-	yield(get_tree(), "idle_frame") 
-	if is_instance_valid(btn_node):
-		var btn_global_pos = btn_node.rect_global_position
-		var total_scale = btn_node.get_global_transform().get_scale()
-		var true_width = btn_node.rect_size.x * total_scale.x
-		var label_size = hover_label.rect_size
-		var pos_x = btn_global_pos.x + (true_width / 2) - (label_size.x / 2)
-		var pos_y = btn_global_pos.y - label_size.y - 15
-		hover_label.rect_global_position = Vector2(pos_x, pos_y)
-		hover_label.raise()
 
-func _on_result_btn_exit():
-	hover_label.hide()
-	
-func next_question():
-	$Book_animated.frame = 0
-	$Book_animated.play("next")
+func show_quiz_ui_animation():
+	var tween = get_tree().create_tween() 
 
-	current_question_index += 1
-	$ProgressBar.value = current_question_index
-	update_cat_position()
+	var bar = $ProgressBar
+	var start_pos_bar = bar.rect_position.y + 100
+	bar.rect_position.y = start_pos_bar
+	bar.modulate.a = 0
+	var t1 = $Tween.interpolate_property(bar, "rect_position:y", start_pos_bar, start_pos_bar - 100, 0.6, Tween.TRANS_BACK, Tween.EASE_OUT)
+	var t2 = $Tween.interpolate_property(bar, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	$Tween.interpolate_property($ProgressCat1, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 
-	if current_question_index < total_questions:
-		load_current_question_to_ui()
-	else:
-		quiz_finished_win()
+	var hearts = $QuizUI/Hearts.get_children()
+	for i in range(hearts.size()):
+		var h = hearts[i]
+		var start_y = h.rect_position.y - 100
+		h.rect_position.y = start_y
+		h.modulate.a = 0
+		$Tween.interpolate_property(h, "rect_position:y", start_y, start_y + 100, 0.7 + i * 0.1, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+		$Tween.interpolate_property(h, "modulate:a", 0, 1, 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+
+	$Tween.start()
+
 func animate_ui_in():
 	var q_label = $QuizUI/QuestionLabel
 	var btn_group = $QuizUI.get_node("Answer Button")
@@ -281,6 +226,32 @@ func animate_ui_out():
 	tween.tween_property(btn_group, "modulate:a", 0, 0.4)
 	tween.tween_property(expl_label, "modulate:a", 0, 0.4)
 
+func _on_answer_pressed(pilihan_user):
+	var data = current_questions_list[current_question_index]
+	var jawaban_benar = str(data["answer"])
+	var btns = $QuizUI.get_node("Answer Button")
+	for child in btns.get_children():
+		child.disabled = true
+		
+	if pilihan_user.to_upper() == jawaban_benar.to_upper():
+		print("Benar!")
+		show_explanation_sequence(data)
+	else:
+		print("Salah!")
+		wrong_answer()
+		if health > 0:
+			for child in btns.get_children():
+				child.disabled = false
+func show_explanation_sequence(data):
+	var btns = $QuizUI.get_node("Answer Button")
+	var expl_text = "Penjelasan: " + str(data.get("Explanation", "Tidak ada penjelasan."))
+	$QuizUI/ExplanationLabel.text = expl_text
+	$QuizUI/ExplanationLabel.show()
+	$QuizUI/ExplanationLabel.modulate.a = 0
+	var tween = create_tween()
+	tween.tween_property($QuizUI/ExplanationLabel, "modulate:a", 1, 0.5)
+	yield(get_tree().create_timer(3.0), "timeout")
+	proceed_to_next_step()
 func wrong_answer():
 	if health > 0:
 		health -= 1
@@ -288,8 +259,88 @@ func wrong_answer():
 	
 	if health <= 0:
 		quiz_finished_lose()
+func update_health_display():
+	var hearts = $QuizUI/Hearts.get_children()
+	for i in range(hearts.size()):
+		if i < health:
+			hearts[i].modulate = Color(1, 1, 1)
+		else:
+			hearts[i].modulate = Color(0.6, 0.6, 0.6)
+			create_tween().tween_property(hearts[i], "rect_position:y", -20, 0.5)
+			
+func proceed_to_next_step():
+	animate_ui_out()
+	yield(get_tree().create_timer(0.5), "timeout")
+	$QuizUI/ExplanationLabel.hide()
+	$Book_animated.frame = 0
+	$Book_animated.play("next")
+	yield($Book_animated, "animation_finished")
+	current_question_index += 1
+	$ProgressBar.value = current_question_index
+	update_cat_position()
+	if current_question_index < total_questions:
+		load_current_question_to_ui()
+		var btns = $QuizUI.get_node("Answer Button")
+		for child in btns.get_children():
+			child.disabled = false
+		animate_ui_in()
+		
+	else:
+		quiz_finished_win()
 
+func update_cat_position():
+	var ratio = float($ProgressBar.value) / float($ProgressBar.max_value)
+	var bar_width = $ProgressBar.rect_size.x
+	var bar_pos = $ProgressBar.rect_position.x
+	$ProgressCat1.position.x = bar_pos + (bar_width * ratio)
+		
+func quiz_finished_lose():
+	$BookUI.hide()
+	$Book_animated.hide()
+	$ProgressBar.hide()
+	$QuizUI/Hearts.hide()
+	$ProgressCat1.hide()
+	$QuizUI/QuestionLabel.hide()
+	$QuizUI.get_node("Answer Button").hide()
+	if failed_sprite: failed_sprite.hide()
+	
+	bad_end_node.hide()
+	bad_end2_node.show()
+	if failed_sprite: 
+		failed_sprite.show()
+	bad_end2_node.frame = 0
+	bad_end_node.get_node("ReturnButton").hide()
+	bad_end_node.get_node("RetryButton").hide()
+	$QuizUI/bad_end2.play("appear")
+	yield($QuizUI/bad_end2, "animation_finished")
+	bad_end2_node.hide()
+	bad_end_node.show()
+	bad_end_node.get_node("ReturnButton").show()
+	bad_end_node.get_node("RetryButton").show()
+	_start_lose_loop()
+func _start_lose_loop():
+	while bad_end_node.visible:
+		bad_end_node.frame = 0
+		bad_end_node.play("idle")
+		yield(bad_end_node, "animation_finished")
+		
+		if not bad_end_node.visible: 
+			break
+		bad_end_node.play("blink")
+		yield(bad_end_node, "animation_finished")
+func _retry_quiz():
+	hover_label.hide()
+	if failed_sprite: failed_sprite.hide() 
+	bad_end_node.hide()
+	bad_end_node.stop()
+	$Book_animated.show()
+	$Book_animated.frame=0
+	$Book_animated.play("open")
+	yield($Book_animated, "animation_finished")
+	_on_difficulty_selected(current_difficulty)
 func quiz_finished_win():
+	var btn_kitchen = $QuizUI/ResultPopup/KitchenButton
+	var btn_back = $QuizUI/ResultPopup/BackLibraryButton
 	$ProgressCat1.speed_scale = 2.0
 	yield(get_tree().create_timer(1.0), "timeout")
 	update_result_popup_content()
@@ -298,8 +349,10 @@ func quiz_finished_win():
 	$QuizUI/Hearts.hide()
 	$QuizUI/QuestionLabel.hide()
 	$QuizUI.get_node("Answer Button").hide()
-
 	var light = $QuizUI/Light
+	btn_kitchen.disabled = true
+	btn_back.disabled = true
+	hover_label.hide()
 	ui_blocker.show()
 	light.show()
 	light.modulate.a = 0
@@ -317,7 +370,9 @@ func quiz_finished_win():
 	$Book_animated.hide()
 	yield(tween_in, "finished")
 	yield(get_tree().create_timer(0.5), "timeout")
-	
+	btn_kitchen.disabled = false
+	btn_back.disabled = false
+	hover_label.show()
 	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
 	var resep_baru = data["name"]
 	if not resep_baru in GameData.owned_recipes:
@@ -331,7 +386,6 @@ func quiz_finished_win():
 	$BackToMap.disabled = false
 	$ProgressBar.value=0
 	$ProgressCat1.position.x = 138
-	
 func update_result_popup_content():
 	var data = GameData.get_recipe_data(current_mapel, current_difficulty)
 	
@@ -369,53 +423,53 @@ func update_result_popup_content():
 				container.add_child(texture_rect)
 			else:
 				print("Gambar tidak ditemukan untuk bahan: ", path)
-func quiz_finished_lose():
-	$BookUI.hide()
-	$Book_animated.hide()
-	$ProgressBar.hide()
-	$QuizUI/Hearts.hide()
-	$ProgressCat1.hide()
-	$QuizUI/QuestionLabel.hide()
-	$QuizUI.get_node("Answer Button").hide()
-	if failed_sprite: failed_sprite.hide()
-	
-	bad_end_node.hide()
-	bad_end2_node.show()
-	if failed_sprite: 
-		failed_sprite.show()
-	bad_end2_node.frame = 0
-	bad_end_node.get_node("ReturnButton").hide()
-	bad_end_node.get_node("RetryButton").hide()
-	$QuizUI/bad_end2.play("appear")
-	yield($QuizUI/bad_end2, "animation_finished")
-	bad_end2_node.hide()
-	bad_end_node.show()
-	bad_end_node.get_node("ReturnButton").show()
-	bad_end_node.get_node("RetryButton").show()
-	_start_lose_loop()
-func _start_lose_loop():
-	while bad_end_node.visible:
-		bad_end_node.frame = 0
-		bad_end_node.play("idle")
-		yield(bad_end_node, "animation_finished")
-		
-		if not bad_end_node.visible: 
-			break
-		bad_end_node.play("blink")
-		yield(bad_end_node, "animation_finished")
-		
-func _retry_quiz():
-	if failed_sprite: failed_sprite.hide() 
-	bad_end_node.hide()
-	bad_end_node.stop()
-	$Book_animated.show()
-	$Book_animated.frame=0
-	$Book_animated.play("open")
-	yield($Book_animated, "animation_finished")
-	_on_difficulty_selected(current_difficulty)
 
 func _goto_kitchen():
 	get_tree().change_scene("res://Scene/Kitchen.tscn")
+
+func _on_shelf_entered(shelf, mapel):
+	if not ui_blocker.visible:
+		show_hover(mapel, shelf)
+func _on_shelf_exited():
+	hover_label.hide()
+
+func show_hover(text, shelf_node):
+	hover_label.text = text
+	hover_label.rect_size = Vector2(0, 0)
+	hover_label.show()
+	yield(get_tree(), "idle_frame")
+	if is_instance_valid(shelf_node):
+		var global_pos = shelf_node.rect_global_position
+		var total_scale = shelf_node.get_global_transform().get_scale()
+		var true_width = shelf_node.rect_size.x * total_scale.x
+		var true_height = shelf_node.rect_size.y * total_scale.y
+		var pos_x = global_pos.x + (true_width / 2) - (hover_label.rect_size.x / 2)
+		var pos_y = global_pos.y + true_height + 5
+		
+		hover_label.rect_global_position = Vector2(pos_x, pos_y)
+		hover_label.raise()
+
+func _add_hover(btn_node, text):
+	if not btn_node.is_connected("mouse_entered", self, "_on_result_btn_hover"):
+		btn_node.connect("mouse_entered", self, "_on_result_btn_hover", [btn_node, text])
+		btn_node.connect("mouse_exited", self, "_on_result_btn_exit")
+func _on_result_btn_hover(btn_node, text):
+	hover_label.text = text
+	hover_label.rect_size = Vector2(0, 0) 
+	hover_label.show()
+	yield(get_tree(), "idle_frame") 
+	if is_instance_valid(btn_node):
+		var btn_global_pos = btn_node.rect_global_position
+		var total_scale = btn_node.get_global_transform().get_scale()
+		var true_width = btn_node.rect_size.x * total_scale.x
+		var label_size = hover_label.rect_size
+		var pos_x = btn_global_pos.x + (true_width / 2) - (label_size.x / 2)
+		var pos_y = btn_global_pos.y - label_size.y - 15
+		hover_label.rect_global_position = Vector2(pos_x, pos_y)
+		hover_label.raise()
+
+func _on_result_btn_exit():
+	hover_label.hide()
 	
 func _on_book_back_pressed():
 	hover_label.hide()
@@ -447,68 +501,8 @@ func _on_book_back_pressed():
 	$BackToMap.disabled = false
 	ui_blocker.hide()
 
-func update_cat_position():
-	var ratio = float($ProgressBar.value) / float($ProgressBar.max_value)
-	var bar_width = $ProgressBar.rect_size.x
-	var bar_pos = $ProgressBar.rect_position.x
-	$ProgressCat1.position.x = bar_pos + (bar_width * ratio)
-
-func update_health_display():
-	var hearts = $QuizUI/Hearts.get_children()
-	for i in range(hearts.size()):
-		if i < health:
-			hearts[i].modulate = Color(1, 1, 1)
-		else:
-			hearts[i].modulate = Color(0.6, 0.6, 0.6)
-			create_tween().tween_property(hearts[i], "rect_position:y", -20, 0.5)
-
 func Menupressed():
 	get_tree().change_scene("res://Scene/Map.tscn")
-
-func _on_shelf_entered(shelf, mapel):
-	if not ui_blocker.visible:
-		show_hover(mapel, shelf)
-
-func _on_shelf_exited():
-	hover_label.hide()
-
-func show_hover(text, shelf_node):
-	hover_label.text = text
-	hover_label.rect_size = Vector2(0, 0)
-	hover_label.show()
-	yield(get_tree(), "idle_frame")
-	if is_instance_valid(shelf_node):
-		var global_pos = shelf_node.rect_global_position
-		var total_scale = shelf_node.get_global_transform().get_scale()
-		var true_width = shelf_node.rect_size.x * total_scale.x
-		var true_height = shelf_node.rect_size.y * total_scale.y
-		var pos_x = global_pos.x + (true_width / 2) - (hover_label.rect_size.x / 2)
-		var pos_y = global_pos.y + true_height + 5
-		
-		hover_label.rect_global_position = Vector2(pos_x, pos_y)
-		hover_label.raise()
-
-func show_quiz_ui_animation():
-	var tween = get_tree().create_tween() 
-
-	var bar = $ProgressBar
-	var start_pos_bar = bar.rect_position.y + 100
-	bar.rect_position.y = start_pos_bar
-	bar.modulate.a = 0
-	var t1 = $Tween.interpolate_property(bar, "rect_position:y", start_pos_bar, start_pos_bar - 100, 0.6, Tween.TRANS_BACK, Tween.EASE_OUT)
-	var t2 = $Tween.interpolate_property(bar, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	$Tween.interpolate_property($ProgressCat1, "modulate:a", 0, 1, 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-
-	var hearts = $QuizUI/Hearts.get_children()
-	for i in range(hearts.size()):
-		var h = hearts[i]
-		var start_y = h.rect_position.y - 100
-		h.rect_position.y = start_y
-		h.modulate.a = 0
-		$Tween.interpolate_property(h, "rect_position:y", start_y, start_y + 100, 0.7 + i * 0.1, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-		$Tween.interpolate_property(h, "modulate:a", 0, 1, 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-
-	$Tween.start()
 
 func reset_state():
 	health = 3

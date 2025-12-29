@@ -48,6 +48,7 @@ func _on_button_hover(btn):
 		$HoverLabel.rect_global_position = label_pos
 		$HoverLabel.visible = true
 		$HoverLabel.raise()
+
 func _on_button_leave():
 	$HoverLabel.visible = false
 	
@@ -72,6 +73,7 @@ func _on_exit_pressed():
 
 func _on_play_pressed():
 	get_tree().change_scene("res://Scene/Map.tscn")
+	
 func _on_about_pressed():
 	about_popup.show()
 	about_popup.modulate.a = 0.0 

@@ -229,6 +229,7 @@ margin_bottom = 14.0
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AboutText" type="TextureRect" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 113 )

@@ -91,7 +91,7 @@ func get_recipe_data(mapel, difficulty):
 		return {"name": "???", "ing": "???", "desc": "Resep tidak ditemukan"}
 
 func get_recipe_by_name(target_name):
-	# Bersihkan nama target dari spasi hantu
+	# Bersihkan nama target dari spasi
 	var clean_target = target_name.strip_edges()
 	
 	for mapel in recipe_database.keys():
